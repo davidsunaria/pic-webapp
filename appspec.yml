@@ -1,0 +1,11 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/html/picnic-webapp
+permissions:
+  - object: /var/www/html/picnic-webapp
+    pattern: "**"
+    owner: ubuntu
+    group: www-data
+    mode: 775
