@@ -1,0 +1,29 @@
+@import './variables.scss';
+$primary:#4EB176;
+$secondary:#444444;
+$text-color:#4B4B5A;
+
+
+@media(max-width:767px){
+	.eventTitle{
+		flex-direction: column;
+		section{
+			padding:10px 0px;
+		}
+	}
+	.logoHeader{
+		text-align: center;
+	}
+	.googleAppButtonsOUter a{
+		margin: 0px 2px;
+		img{
+			height:40px;
+		}
+	}
+	.googleAppButtonsOUter{
+		margin-top: 28px;
+	}
+	.downloadAppOuter{
+		padding: 50px 15px;
+	}
+}
