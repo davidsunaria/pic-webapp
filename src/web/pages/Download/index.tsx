@@ -1,10 +1,19 @@
-import React from "react";
+import React,{useEffect} from "react";
 import Logo from "react-app-images/logo.png";
 import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
-import { Link } from "react-router-dom";
+import { Link ,useLocation} from "react-router-dom";
+import env from "../../../config";
 
 const Download: React.FC = (): JSX.Element => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (pathname === "/download/appstore")
+      window.location.replace(env.REACT_APP_IOS_URL || "");
+    if (pathname === "/download/googleplay") {
+      window.location.replace(env?.REACT_APP_ANDROID_URL || "");
+    }
+  }, [pathname]);
   return (
     <>
       <div className="BGColor"></div>
@@ -21,10 +30,10 @@ const Download: React.FC = (): JSX.Element => {
           </p>
 
           <div className="googleAppButtonsOUter">
-          <Link to={process.env.REACT_APP_ANDROID_URL || "#"}>
+          <Link to="/download/googleplay">
               <img src={GOOGLEPLAY_IMAGE} alt="" />
             </Link>
-            <Link to={process.env.REACT_APP_IOS_URL || "#"}>
+            <Link to="/download/appstore">
               <img src={APPSTORE_IMAGE} alt="" />
             </Link>
           </div>

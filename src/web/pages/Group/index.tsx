@@ -8,12 +8,12 @@ import DEFAULT_IMAGE from "react-app-images/default.png";
 import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Link } from "react-router-dom";
+import { Link ,useLocation} from "react-router-dom";
 const Group: React.FC = (): JSX.Element => {
   const { id } = useParams();
+  const { pathname } = useLocation();
   const response = useStoreState((state) => state.detail.groupResponse);
   const getGroup = useStoreActions((action) => action.detail.getGroup);
-
   const getGroupDetail = useCallback(async (payload) => {
     await getGroup({
       url: "common/get-resource-detail",
@@ -38,6 +38,14 @@ const Group: React.FC = (): JSX.Element => {
     );
   };
 
+
+  useEffect(() => {
+    if (pathname === "/group/appstore")
+      window.location.replace(env.REACT_APP_IOS_URL || "");
+    if (pathname === "/group/googleplay") {
+      window.location.replace(env?.REACT_APP_ANDROID_URL || "");
+    }
+  }, [pathname]);
   return (
     <>
       <div className="BGColor"></div>
@@ -137,10 +145,10 @@ const Group: React.FC = (): JSX.Element => {
           </div>
         </div>
         <div className="googleAppButtonsOUter picnicEventDownloadButton">
-          <Link to={process.env.REACT_APP_ANDROID_URL || "#"}>
+        <Link to="/group/googleplay">
             <img src={GOOGLEPLAY_IMAGE} alt="" />
           </Link>
-          <Link to={process.env.REACT_APP_IOS_URL || "#"}>
+          <Link to="/group/appstore">
             <img src={APPSTORE_IMAGE} alt="" />
           </Link>
         </div>

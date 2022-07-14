@@ -11,7 +11,7 @@ import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import { useStoreActions, useStoreState } from "react-app-store";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import env from "../../../config";
 import { useParams } from "react-router-dom";
 import {
@@ -23,6 +23,7 @@ import {
 
 const Event: React.FC = (): JSX.Element => {
   const { id } = useParams();
+  const { pathname } = useLocation();
   const response = useStoreState((state) => state.detail.eventResponse);
   const getEvent = useStoreActions((action) => action.detail.getEvent);
 
@@ -49,7 +50,6 @@ const Event: React.FC = (): JSX.Element => {
       (options?.height || "")
     );
   };
-
   const minValue = (data: any) => {
     let min = data.reduce(function (res: any, obj: any) {
       return obj.amount < res.amount ? obj : res;
@@ -135,6 +135,14 @@ const Event: React.FC = (): JSX.Element => {
         </CarouselItem>
       );
     });
+
+  useEffect(() => {
+    if (pathname === "/event/appstore")
+      window.location.replace(env.REACT_APP_IOS_URL || "");
+    if (pathname === "/event/googleplay") {
+      window.location.replace(env?.REACT_APP_ANDROID_URL || "");
+    }
+  }, [pathname]);
   return (
     <>
       <div className="BGColor"></div>
@@ -411,10 +419,10 @@ const Event: React.FC = (): JSX.Element => {
           </div>
         </div>
         <div className="googleAppButtonsOUter picnicEventDownloadButton">
-        <Link to={process.env.REACT_APP_ANDROID_URL || "#"}>
+          <Link to="/event/googleplay">
             <img src={GOOGLEPLAY_IMAGE} alt="" />
           </Link>
-          <Link to={process.env.REACT_APP_IOS_URL || "#"}>
+          <Link to="/event/appstore">
             <img src={APPSTORE_IMAGE} alt="" />
           </Link>
         </div>
