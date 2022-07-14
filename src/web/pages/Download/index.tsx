@@ -1,7 +1,8 @@
 import React from "react";
 import Logo from "react-app-images/logo.png";
-import GoolePay from "react-app-images/Google-Play.png";
-import AppStore from "react-app-images/App-Store.png";
+import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
+import APPSTORE_IMAGE from "react-app-images/App-Store.png";
+import { Link } from "react-router-dom";
 
 const Download: React.FC = (): JSX.Element => {
   return (
@@ -15,17 +16,17 @@ const Download: React.FC = (): JSX.Element => {
           <div className="downloadAppTitle mb-4">Download Picnic App</div>
 
           <p className="simpleText mt-0 mb-4 joinCommunitiesText">
-            Join local communities, chat with other members,<br/> Get out and be
-            active.
+            Join local communities, chat with other members,
+            <br /> Get out and be active.
           </p>
 
           <div className="googleAppButtonsOUter">
-            <a href="#">
-              <img src={GoolePay} alt="" />
-            </a>
-            <a href="#">
-              <img src={AppStore} alt="" />
-            </a>
+          <Link to={process.env.REACT_APP_ANDROID_URL || "#"}>
+              <img src={GOOGLEPLAY_IMAGE} alt="" />
+            </Link>
+            <Link to={process.env.REACT_APP_IOS_URL || "#"}>
+              <img src={APPSTORE_IMAGE} alt="" />
+            </Link>
           </div>
         </div>
       </div>

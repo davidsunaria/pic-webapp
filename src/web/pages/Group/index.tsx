@@ -5,10 +5,10 @@ import { useStoreActions, useStoreState } from "react-app-store";
 import env from "../../../config";
 import { useParams } from "react-router-dom";
 import DEFAULT_IMAGE from "react-app-images/default.png";
-import LOADER_IMAGE from "react-app-images/gif-loader.gif";
-import GoolePay from 'react-app-images/Google-Play.png';
-import AppStore from 'react-app-images/App-Store.png';
+import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
+import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { Link } from "react-router-dom";
 const Group: React.FC = (): JSX.Element => {
   const { id } = useParams();
   const response = useStoreState((state) => state.detail.groupResponse);
@@ -68,7 +68,7 @@ const Group: React.FC = (): JSX.Element => {
 
               <LazyLoadImage
                 wrapperClassName={"overideImageCircle"}
-                placeholderSrc={LOADER_IMAGE}
+                placeholderSrc={DEFAULT_IMAGE}
                 effect={response?.image ? "blur" : undefined}
                 src={
                   response?.image
@@ -81,48 +81,21 @@ const Group: React.FC = (): JSX.Element => {
                 className="d-block w-100"
                 alt="..."
               />
-
-              {/* <img
-                style={{
-                  position: "absolute",
-                }}
-                src={
-                  response?.image
-                    ? getImageUrl(response?.image, {
-                        type: "groups",
-                        width: 800,
-                      })
-                    : DEFAULT_IMAGE
-                }
-                className="d-block w-100 blurImage"
-                alt="..."
-              /> */}
-
-              {/* <img
-                src={
-                  response?.image
-                    ? getImageUrl(response?.image, {
-                        type: "groups",
-                        width: 800,
-                      })
-                    : DEFAULT_IMAGE
-                }
-                className="d-block w-100"
-                alt="..."
-              /> */}
             </div>
           </div>
 
           <div className="p-4">
             <div className="eventTitle">
               <section className="eventSection flex-grow-1">
-                <span className="eventSectionSpan">{response?.name}</span>
+                <span className="eventSectionSpan">
+                  {response?.name || "N/A"}
+                </span>
                 <label className="eventSectionLabel">{response?.city}</label>
               </section>
               <section className="eventSection">
-                <div className="groupTag">{response?.category}</div>
+                <div className="groupTag">{response?.category || "N/A"}</div>
                 <label className="eventSectionLabel eventPrice">
-                  FM frequency: {response?.radio_frequency}
+                  FM frequency: {response?.radio_frequency || "N/A"}
                 </label>
               </section>
             </div>
@@ -136,7 +109,10 @@ const Group: React.FC = (): JSX.Element => {
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">Group Admin</label>
                   <div>
-                    <img
+                    <LazyLoadImage
+                      wrapperClassName={"overideImageCircle"}
+                      placeholderSrc={DEFAULT_IMAGE}
+                      effect={response?.image ? "blur" : undefined}
                       src={
                         response?.creator_of_group?.image
                           ? getImageUrl(response?.creator_of_group?.image, {
@@ -152,7 +128,7 @@ const Group: React.FC = (): JSX.Element => {
                     <span className="hostedBySpan">
                       {response?.creator_of_group?.first_name
                         ? `${response?.creator_of_group?.first_name} ${response?.creator_of_group?.last_name}`
-                        : ""}
+                        : "N/A"}
                     </span>
                   </div>
                 </div>
@@ -161,12 +137,12 @@ const Group: React.FC = (): JSX.Element => {
           </div>
         </div>
         <div className="googleAppButtonsOUter picnicEventDownloadButton">
-          <a href="#">
-            <img src={GoolePay} alt="" />
-          </a>
-          <a href="#">
-            <img src={AppStore} alt="" />
-          </a>
+          <Link to={process.env.REACT_APP_ANDROID_URL || "#"}>
+            <img src={GOOGLEPLAY_IMAGE} alt="" />
+          </Link>
+          <Link to={process.env.REACT_APP_IOS_URL || "#"}>
+            <img src={APPSTORE_IMAGE} alt="" />
+          </Link>
         </div>
       </div>
     </>

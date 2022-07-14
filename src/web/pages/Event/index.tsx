@@ -1,21 +1,19 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import Logo from "react-app-images/logo.png";
-import Banner1 from "react-app-images/banner1.png";
 import Calender from "react-app-images/calendar.png";
 import Location from "react-app-images/location.png";
 import Clock from "react-app-images/clock.png";
 import Ticket from "react-app-images/Ticket.png";
 import User from "react-app-images/user.png";
 import DEFAULT_IMAGE from "react-app-images/default.png";
-import LOADER_IMAGE from "react-app-images/gif-loader.gif";
-import GoolePay from 'react-app-images/Google-Play.png';
-import AppStore from 'react-app-images/App-Store.png';
+import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
+import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import { useStoreActions, useStoreState } from "react-app-store";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import moment from "moment";
+import { Link } from "react-router-dom";
 import env from "../../../config";
 import { useParams } from "react-router-dom";
-import LoadingOverlay from "react-loading-overlay-ts";
 import {
   Carousel,
   CarouselItem,
@@ -121,13 +119,7 @@ const Event: React.FC = (): JSX.Element => {
 
           <LazyLoadImage
             wrapperClassName={"overideImageCircle"}
-            placeholderSrc={LOADER_IMAGE}
-            // placeholder={
-            //   <div className="d-flex justify-content-center">
-            //     <div className="spinner-border" role="status">
-            //     </div>
-            //   </div>
-            // }
+            placeholderSrc={DEFAULT_IMAGE}
             effect={item?.name ? "blur" : undefined}
             src={
               item?.name
@@ -190,14 +182,16 @@ const Event: React.FC = (): JSX.Element => {
           <div className="p-4">
             <div className="eventTitle">
               <section className="eventSection flex-grow-1">
-                <span className="eventSectionSpan">{response?.name}</span>
+                <span className="eventSectionSpan">
+                  {response?.name || "N/A"}
+                </span>
                 <label className="eventSectionLabel">
                   {response?.city ? response?.city : ""}
                 </label>
               </section>
               <section className="eventSection">
                 {response?.is_free_event === 1 ? (
-                  <span className="eventSectionSpan">Free</span>
+                  <span className="eventSectionSpan"> Free</span>
                 ) : (
                   <>
                     <span className="eventSectionSpan">
@@ -210,9 +204,9 @@ const Event: React.FC = (): JSX.Element => {
                             }`
                           : `$${minValue(response?.ticket_plans)?.amount}`
                         : response?.event_currency === "usd"
-                        ? `$${response?.event_fees}`
-                        : `${response?.event_currency?.toUpperCase()} ${
-                            response?.event_fees
+                        ? `$${response?.event_fees}` || ""
+                        : `${response?.event_currency?.toUpperCase() || ""} ${
+                            response?.event_fees || "N/A"
                           }`}
                     </span>
                     <label className="eventSectionLabel eventPrice">
@@ -240,7 +234,9 @@ const Event: React.FC = (): JSX.Element => {
                       ""
                     )}
                     <label className="eventInfoLabel">
-                      {moment(response?.event_start_date_time).format("LL")}
+                      {response?.event_start_date_time
+                        ? moment(response?.event_start_date_time).format("LL")
+                        : "N/A"}
                     </label>
                   </div>
                 </div>
@@ -256,20 +252,23 @@ const Event: React.FC = (): JSX.Element => {
                     </i>
                     <div className="eventInfoLabelOuter">
                       <label className="eventInfoLabel">
-                        {moment(response?.event_end_date_time).format("LT")}
+                        {response?.event_end_date_time
+                          ? moment(response?.event_end_date_time).format("LT")
+                          : "N/A"}
                       </label>
                     </div>
                   </div>
                 ) : (
                   <div className="eventInfo">
-                    {" "}
                     <i>
                       <img src={Calender} alt="..." />
                     </i>
                     <div className="eventInfoLabelOuter">
                       <p className="eventInfoP">End Date</p>
                       <label className="eventInfoLabel">
-                        {moment(response?.event_end_date_time).format("LL")}
+                        {response?.event_end_date_time
+                          ? moment(response?.event_end_date_time).format("LL")
+                          : "N/A"}
                       </label>
                     </div>
                   </div>
@@ -282,7 +281,7 @@ const Event: React.FC = (): JSX.Element => {
                   </i>
                   <div className="eventInfoLabelOuter">
                     <label className="eventInfoLabel">
-                      {response?.address ? response?.address : ""}
+                      {response?.address ? response?.address : "N/A"}
                     </label>
                   </div>
                 </div>
@@ -299,7 +298,9 @@ const Event: React.FC = (): JSX.Element => {
                         ? `${
                             response?.capacity - response?.total_sold_tickets
                           } Tickets Available`
-                        : "Unlimited"}
+                        : response?.capacity_type === "unlimited"
+                        ? "Unlimited"
+                        : "N/A"}
                     </label>
                   </div>
                 </div>
@@ -340,7 +341,12 @@ const Event: React.FC = (): JSX.Element => {
                     Event hosted by
                   </label>
                   <div>
-                    <img
+                    <LazyLoadImage
+                      wrapperClassName={"overideImageCircle"}
+                      placeholderSrc={DEFAULT_IMAGE}
+                      effect={
+                        response?.creator_of_group?.image ? "blur" : undefined
+                      }
                       src={
                         response?.creator_of_group?.image
                           ? getImageUrl(response?.creator_of_group?.image, {
@@ -357,7 +363,7 @@ const Event: React.FC = (): JSX.Element => {
                       {" "}
                       {response?.creator_of_group?.first_name
                         ? `${response?.creator_of_group?.first_name} ${response?.creator_of_group?.last_name}`
-                        : ""}
+                        : "N/A"}
                     </span>
                   </div>
                 </div>
@@ -366,14 +372,17 @@ const Event: React.FC = (): JSX.Element => {
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">Group</label>
                   <div>
-                    <img
+                    <LazyLoadImage
+                      wrapperClassName={"overideImageCircle"}
+                      placeholderSrc={DEFAULT_IMAGE}
+                      effect={response?.event_group?.image ? "blur" : undefined}
                       src={
                         response?.event_group?.image
                           ? getImageUrl(response?.event_group?.image, {
                               type: "groups",
                               width: 60,
                             })
-                          : User
+                          : DEFAULT_IMAGE
                       }
                       alt="..."
                       width={60}
@@ -383,7 +392,7 @@ const Event: React.FC = (): JSX.Element => {
                       <b>
                         {response?.event_group?.name
                           ? response?.event_group?.name
-                          : ""}
+                          : "N/A"}
                       </b>
                       <p>
                         {response?.event_group?.city
@@ -397,13 +406,17 @@ const Event: React.FC = (): JSX.Element => {
             </div>
             <div className="subtitle">About event</div>
             <p className="simpleText py-2">
-              {response?.details ? response?.details : ""}
+              {response?.details ? response?.details : "N/A"}
             </p>
           </div>
         </div>
         <div className="googleAppButtonsOUter picnicEventDownloadButton">
-          <a href="#"><img src={GoolePay} alt=""/></a>
-          <a href="#"><img src={AppStore} alt=""/></a>
+        <Link to={process.env.REACT_APP_ANDROID_URL || "#"}>
+            <img src={GOOGLEPLAY_IMAGE} alt="" />
+          </Link>
+          <Link to={process.env.REACT_APP_IOS_URL || "#"}>
+            <img src={APPSTORE_IMAGE} alt="" />
+          </Link>
         </div>
       </div>
     </>
