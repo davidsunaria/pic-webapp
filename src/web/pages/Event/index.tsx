@@ -8,6 +8,8 @@ import Ticket from "react-app-images/Ticket.png";
 import User from "react-app-images/user.png";
 import DEFAULT_IMAGE from "react-app-images/default.png";
 import LOADER_IMAGE from "react-app-images/gif-loader.gif";
+import GoolePay from 'react-app-images/Google-Play.png';
+import AppStore from 'react-app-images/App-Store.png';
 import { useStoreActions, useStoreState } from "react-app-store";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import moment from "moment";
@@ -197,26 +199,27 @@ const Event: React.FC = (): JSX.Element => {
                 {response?.is_free_event === 1 ? (
                   <span className="eventSectionSpan">Free</span>
                 ) : (
-                  <span className="eventSectionSpan">
-                    {response?.ticket_type === "multiple"
-                      ? response?.event_currency !== "usd"
-                        ? `${minValue(
-                            response?.ticket_plans
-                          )?.currency?.toUpperCase()} ${
-                            minValue(response?.ticket_plans)?.amount
-                          }`
-                        : `$${minValue(response?.ticket_plans)?.amount}`
-                      : response?.event_currency === "usd"
-                      ? `$${response?.event_fees}`
-                      : `${response?.event_currency?.toUpperCase()} ${
-                          response?.event_fees
-                        }`}
-                  </span>
+                  <>
+                    <span className="eventSectionSpan">
+                      {response?.ticket_type === "multiple"
+                        ? response?.event_currency !== "usd"
+                          ? `${minValue(
+                              response?.ticket_plans
+                            )?.currency?.toUpperCase()} ${
+                              minValue(response?.ticket_plans)?.amount
+                            }`
+                          : `$${minValue(response?.ticket_plans)?.amount}`
+                        : response?.event_currency === "usd"
+                        ? `$${response?.event_fees}`
+                        : `${response?.event_currency?.toUpperCase()} ${
+                            response?.event_fees
+                          }`}
+                    </span>
+                    <label className="eventSectionLabel eventPrice">
+                      Per person
+                    </label>
+                  </>
                 )}
-
-                <label className="eventSectionLabel eventPrice">
-                  Per person
-                </label>
               </section>
             </div>
 
@@ -397,6 +400,10 @@ const Event: React.FC = (): JSX.Element => {
               {response?.details ? response?.details : ""}
             </p>
           </div>
+        </div>
+        <div className="googleAppButtonsOUter picnicEventDownloadButton">
+          <a href="#"><img src={GoolePay} alt=""/></a>
+          <a href="#"><img src={AppStore} alt=""/></a>
         </div>
       </div>
     </>

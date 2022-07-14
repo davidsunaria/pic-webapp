@@ -6,6 +6,8 @@ import env from "../../../config";
 import { useParams } from "react-router-dom";
 import DEFAULT_IMAGE from "react-app-images/default.png";
 import LOADER_IMAGE from "react-app-images/gif-loader.gif";
+import GoolePay from 'react-app-images/Google-Play.png';
+import AppStore from 'react-app-images/App-Store.png';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 const Group: React.FC = (): JSX.Element => {
   const { id } = useParams();
@@ -67,7 +69,6 @@ const Group: React.FC = (): JSX.Element => {
               <LazyLoadImage
                 wrapperClassName={"overideImageCircle"}
                 placeholderSrc={LOADER_IMAGE}
-               
                 effect={response?.image ? "blur" : undefined}
                 src={
                   response?.image
@@ -158,6 +159,14 @@ const Group: React.FC = (): JSX.Element => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="googleAppButtonsOUter picnicEventDownloadButton">
+          <a href="#">
+            <img src={GoolePay} alt="" />
+          </a>
+          <a href="#">
+            <img src={AppStore} alt="" />
+          </a>
         </div>
       </div>
     </>
