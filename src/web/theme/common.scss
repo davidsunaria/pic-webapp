@@ -341,3 +341,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   top: 50%;
   margin-top: -28px;
 }
+
+
+.closeVideo{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  z-index: 28;
+  opacity: 1;
+  right: 8px;
+  top: 8px
+}

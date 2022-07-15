@@ -9,6 +9,7 @@ import DEFAULT_IMAGE from "react-app-images/default.png";
 import PLAY_IMAGE from "react-app-images/play.png";
 import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
+import CLOSEVIDEO_IMAGE from "react-app-images/cross-video.png";
 import { useStoreActions, useStoreState } from "react-app-store";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import moment from "moment";
@@ -179,6 +180,7 @@ const Event: React.FC = (): JSX.Element => {
       <div className="BGColor"></div>
 
       <Modal show={isVideoPlaying} className="videoModal" onHide={handleClose}>
+        <img src={CLOSEVIDEO_IMAGE} alt="" className="closeVideo" onClick={handleClose}/>
         <video controls={true} autoPlay={true} className="videoControl">
           <source
             src={env?.REACT_APP_VIDEO_URL + videoAddress}
