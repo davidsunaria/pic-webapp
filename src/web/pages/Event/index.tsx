@@ -16,6 +16,8 @@ import env from "../../../config";
 import { useParams } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import ModalVideo from "react-modal-video";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 // import {
 //   Carousel,
 //   CarouselItem,
@@ -29,6 +31,11 @@ const Event: React.FC = (): JSX.Element => {
   const response = useStoreState((state) => state.detail.eventResponse);
   const getEvent = useStoreActions((action) => action.detail.getEvent);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+
+  //  const [show, setShow] = useState(false);
+
+  const handleClose = () => setIsVideoPlaying(false);
+  const handleShow = () => setIsVideoPlaying(true);
 
   const getEventDetail = useCallback(async (payload) => {
     await getEvent({
@@ -72,6 +79,7 @@ const Event: React.FC = (): JSX.Element => {
     ? [coverImage]
     : false;
   // Carousel Item Data
+
   const carouselItemData =
     eventImages?.length &&
     eventImages?.map((item: any, i: number) => {
@@ -79,12 +87,20 @@ const Event: React.FC = (): JSX.Element => {
         <Carousel.Item key={i}>
           {item?.type === "video" ? (
             <>
-              {/* <ModalVideo
-                url={env?.REACT_APP_VIDEO_URL + item?.name}
-                isOpen={isVideoPlaying}
-                onClose={() => setIsVideoPlaying(false)}
-              /> */}
+              <Modal show={isVideoPlaying} onHide={handleClose}>
+                {console.log("erfgwuiefuiwuife")}
+                <video controls={true} autoPlay={true} className="videoControl">
+                  <source
+                    src={env?.REACT_APP_VIDEO_URL + item?.name}
+                    type="video/mp4"
+                  />
+                </video>
+              </Modal>
+
               <LazyLoadImage
+                onClick={() => {
+                  setIsVideoPlaying(true);
+                }}
                 wrapperClassName={"overideImageCircle"}
                 effect={item?.name ? "blur" : undefined}
                 style={{
@@ -101,6 +117,9 @@ const Event: React.FC = (): JSX.Element => {
                 alt="..."
               />
               <LazyLoadImage
+                onClick={() => {
+                  setIsVideoPlaying(true);
+                }}
                 wrapperClassName={"overideImageCircle"}
                 placeholderSrc={DEFAULT_IMAGE}
                 effect={item?.name ? "blur" : undefined}
