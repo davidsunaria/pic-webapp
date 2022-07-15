@@ -6,6 +6,7 @@ import Clock from "react-app-images/clock.png";
 import Ticket from "react-app-images/Ticket.png";
 import User from "react-app-images/user.png";
 import DEFAULT_IMAGE from "react-app-images/default.png";
+import PLAY_IMAGE from "react-app-images/play.png";
 import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import { useStoreActions, useStoreState } from "react-app-store";
@@ -15,15 +16,7 @@ import { Link, useLocation } from "react-router-dom";
 import env from "../../../config";
 import { useParams } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
-import ModalVideo from "react-modal-video";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-// import {
-//   Carousel,
-//   CarouselItem,
-//   CarouselControl,
-//   CarouselIndicators,
-// } from "reactstrap";
 
 const Event: React.FC = (): JSX.Element => {
   const { id } = useParams();
@@ -31,6 +24,7 @@ const Event: React.FC = (): JSX.Element => {
   const response = useStoreState((state) => state.detail.eventResponse);
   const getEvent = useStoreActions((action) => action.detail.getEvent);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+  const [videoAddress, setVideoAddress] = useState<any>("");
 
   //  const [show, setShow] = useState(false);
 
@@ -80,6 +74,10 @@ const Event: React.FC = (): JSX.Element => {
     : false;
   // Carousel Item Data
 
+  const getVideoAddress = (src: any) => {
+    setVideoAddress(src);
+  };
+
   const carouselItemData =
     eventImages?.length &&
     eventImages?.map((item: any, i: number) => {
@@ -87,20 +85,16 @@ const Event: React.FC = (): JSX.Element => {
         <Carousel.Item key={i}>
           {item?.type === "video" ? (
             <>
-              <Modal show={isVideoPlaying} onHide={handleClose}>
-                {console.log("erfgwuiefuiwuife")}
-                <video controls={true} autoPlay={true} className="videoControl">
-                  <source
-                    src={env?.REACT_APP_VIDEO_URL + item?.name}
-                    type="video/mp4"
-                  />
-                </video>
-              </Modal>
-
-              <LazyLoadImage
+              <img
+                src={PLAY_IMAGE}
+                alt=""
+                className="playIcon"
                 onClick={() => {
                   setIsVideoPlaying(true);
+                  getVideoAddress(item?.name);
                 }}
+              />
+              <LazyLoadImage
                 wrapperClassName={"overideImageCircle"}
                 effect={item?.name ? "blur" : undefined}
                 style={{
@@ -117,9 +111,6 @@ const Event: React.FC = (): JSX.Element => {
                 alt="..."
               />
               <LazyLoadImage
-                onClick={() => {
-                  setIsVideoPlaying(true);
-                }}
                 wrapperClassName={"overideImageCircle"}
                 placeholderSrc={DEFAULT_IMAGE}
                 effect={item?.name ? "blur" : undefined}
@@ -135,12 +126,6 @@ const Event: React.FC = (): JSX.Element => {
               />
             </>
           ) : (
-            // <video controls={true} autoPlay={true} className="videoControl" ref={videoRef}>
-            //   <source
-            //     src={env?.REACT_APP_VIDEO_URL + item?.name}
-            //     type="video/mp4"
-            //   />
-            // </video>
             item?.name && (
               <>
                 <LazyLoadImage
@@ -160,7 +145,6 @@ const Event: React.FC = (): JSX.Element => {
                   className="d-block w-100 blurImage"
                   alt="..."
                 />
-
                 <LazyLoadImage
                   wrapperClassName={"overideImageCircle"}
                   placeholderSrc={DEFAULT_IMAGE}
@@ -193,6 +177,16 @@ const Event: React.FC = (): JSX.Element => {
   return (
     <>
       <div className="BGColor"></div>
+
+      <Modal show={isVideoPlaying} className="videoModal" onHide={handleClose}>
+        <video controls={true} autoPlay={true} className="videoControl">
+          <source
+            src={env?.REACT_APP_VIDEO_URL + videoAddress}
+            type="video/mp4"
+          />
+        </video>
+      </Modal>
+
       <div className="mobileDetailWrapper">
         <div className="logoHeader">
           <img src={Logo} alt="..." />

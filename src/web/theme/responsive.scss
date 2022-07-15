@@ -26,4 +26,14 @@ $text-color:#4B4B5A;
 	.downloadAppOuter{
 		padding: 50px 15px;
 	}
+	.videoModal{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.modal-dialog{
+		  width: 90%;
+		  max-width: 90%;
+	
+		}
+	}
 }
