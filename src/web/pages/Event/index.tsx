@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Logo from "react-app-images/logo.png";
 import Calender from "react-app-images/calendar.png";
 import Location from "react-app-images/location.png";
@@ -14,18 +14,22 @@ import moment from "moment";
 import { Link, useLocation } from "react-router-dom";
 import env from "../../../config";
 import { useParams } from "react-router-dom";
-import {
-  Carousel,
-  CarouselItem,
-  CarouselControl,
-  CarouselIndicators,
-} from "reactstrap";
+import Carousel from "react-bootstrap/Carousel";
+// import {
+//   Carousel,
+//   CarouselItem,
+//   CarouselControl,
+//   CarouselIndicators,
+// } from "reactstrap";
 
 const Event: React.FC = (): JSX.Element => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const response = useStoreState((state) => state.detail.eventResponse);
   const getEvent = useStoreActions((action) => action.detail.getEvent);
+  const [sliderInterval, setSliderInterval] = useState<any>(0);
+
+ // const { getVideoDurationInSeconds } = require("get-video-duration");
 
   const getEventDetail = useCallback(async (payload) => {
     await getEvent({
@@ -57,26 +61,6 @@ const Event: React.FC = (): JSX.Element => {
     return min;
   };
 
-  const [activeIndex, setActiveIndex] = React.useState(0);
-
-  // State for Animation
-  const [animating, setAnimating] = React.useState(false);
-
-  const itemLength = response?.event_images?.length;
-
-  const previousButton = () => {
-    if (animating) return;
-    const nextIndex = activeIndex === 0 ? itemLength : activeIndex - 1;
-    setActiveIndex(nextIndex);
-  };
-
-  // Next button for Carousel
-  const nextButton = () => {
-    if (animating) return;
-    const nextIndex = activeIndex === itemLength ? 0 : activeIndex + 1;
-    setActiveIndex(nextIndex);
-  };
-
   let coverImage = {
     name: response?.image,
   };
@@ -91,48 +75,120 @@ const Event: React.FC = (): JSX.Element => {
   const carouselItemData =
     eventImages?.length &&
     eventImages?.map((item: any, i: number) => {
+      // item?.type === "video"
+      //   ? getVideoDurationInSeconds(env?.REACT_APP_VIDEO_URL+item?.name).then((duration:any) => {
+      //     console.log(duration)
+      //   })
+        
+        
+      //   : setSliderInterval(5000);
       return (
-        <CarouselItem
-          key={i}
-          onExited={() => setAnimating(false)}
-          onExiting={() => setAnimating(true)}
-        >
-          {item?.name && (
+        <Carousel.Item>
+          {item?.type === "video" ? (
             <LazyLoadImage
-              wrapperClassName={"overideImageCircle"}
-              effect={item?.name ? "blur" : undefined}
-              style={{
-                position: "absolute",
-              }}
-              src={
-                item?.name
-                  ? getImageUrl(item?.name, {
-                      type: "events",
-                      width: 800,
-                    })
-                  : DEFAULT_IMAGE
-              }
-              className="d-block w-100 blurImage"
-              alt="..."
-            />
-          )}
+                  wrapperClassName={"overideImageCircle"}
+                  effect={item?.name ? "blur" : undefined}
+                  style={{
+                    position: "absolute",
+                  }}
+                  src={
+                    item?.name
+                      ? env?.REACT_APP_VIDEO_URL+ (item?.name?.substring(0, item?.name?.lastIndexOf("."))) + "-00001.png"
+                      : DEFAULT_IMAGE
+                  }
+                  className="d-block w-100 blurImage"
+                  alt="..."
+                />
 
-          <LazyLoadImage
-            wrapperClassName={"overideImageCircle"}
-            placeholderSrc={DEFAULT_IMAGE}
-            effect={item?.name ? "blur" : undefined}
-            src={
-              item?.name
-                ? getImageUrl(item?.name, {
-                    type: "events",
-                    width: 800,
-                  })
-                : DEFAULT_IMAGE
-            }
-            className="d-block w-100"
-            alt="..."
-          />
-        </CarouselItem>
+
+            // <video controls={true} autoPlay={true} className="videoControl">
+            //   <source
+            //     src={env?.REACT_APP_VIDEO_URL + item?.name}
+            //     type="video/mp4"
+            //   />
+            // </video>
+          ) : (
+            item?.name && (
+              <>
+                <LazyLoadImage
+                  wrapperClassName={"overideImageCircle"}
+                  effect={item?.name ? "blur" : undefined}
+                  style={{
+                    position: "absolute",
+                  }}
+                  src={
+                    item?.name
+                      ? getImageUrl(item?.name, {
+                          type: "events",
+                          width: 800,
+                        })
+                      : DEFAULT_IMAGE
+                  }
+                  className="d-block w-100 blurImage"
+                  alt="..."
+                />
+
+                <LazyLoadImage
+                  wrapperClassName={"overideImageCircle"}
+                  placeholderSrc={DEFAULT_IMAGE}
+                  effect={item?.name ? "blur" : undefined}
+                  src={
+                    item?.name
+                      ? getImageUrl(item?.name, {
+                          type: "events",
+                          width: 800,
+                        })
+                      : DEFAULT_IMAGE
+                  }
+                  className="d-block w-100"
+                  alt="..."
+                />
+              </>
+            )
+          )}
+        </Carousel.Item>
+
+        // <CarouselItem
+        //   key={i}
+        //   onExited={() => setAnimating(false)}
+        //   onExiting={() => setAnimating(true)}
+        // >
+        //   {item?.name && (
+        //     <LazyLoadImage
+        //       wrapperClassName={"overideImageCircle"}
+        //       effect={item?.name ? "blur" : undefined}
+        //       style={{
+        //         position: "absolute",
+        //       }}
+        //       src={
+        //         item?.name
+        //           ? getImageUrl(item?.name, {
+        //               type: "events",
+        //               width: 800,
+        //             })
+        //           : DEFAULT_IMAGE
+        //       }
+        //       className="d-block w-100 blurImage"
+        //       alt="..."
+        //     />
+        //   )}
+
+        //   <LazyLoadImage
+        //     wrapperClassName={"overideImageCircle"}
+        //     placeholderSrc={DEFAULT_IMAGE}
+        //     effect={item?.name ? "blur" : undefined}
+        //     src={
+        //       item?.name
+        //         ? getImageUrl(item?.name, {
+        //             type: "events",
+        //             width: 800,
+        //           })
+        //         : DEFAULT_IMAGE
+        //     }
+        //     className="d-block w-100"
+        //     alt="..."
+        //   />
+        // </CarouselItem>
       );
     });
 
@@ -151,36 +207,8 @@ const Event: React.FC = (): JSX.Element => {
           <img src={Logo} alt="..." />
         </div>
         <div className="mobileContent picnicEventSlider">
-          {carouselItemData && carouselItemData?.length > 0 && (
-            <Carousel
-              previous={previousButton}
-              next={nextButton}
-              activeIndex={activeIndex}
-              controls={true}
-              autoPlay={true}
-              pause={"hover"}
-            >
-              <CarouselIndicators
-                items={eventImages?.length ? eventImages : []}
-                activeIndex={activeIndex}
-                onClickHandler={(newIndex: any) => {
-                  if (animating) return;
-                  setActiveIndex(newIndex);
-                }}
-              />
-
-              {carouselItemData}
-              <CarouselControl
-                directionText="Prev"
-                direction="prev"
-                onClickHandler={previousButton}
-              />
-              <CarouselControl
-                directionText="Next"
-                direction="next"
-                onClickHandler={nextButton}
-              />
-            </Carousel>
+          {carouselItemData?.length > 0 && (
+            <Carousel interval={3000}>{carouselItemData}</Carousel>
           )}
           {!carouselItemData?.length && (
             <div className="defaultImgOuter">
