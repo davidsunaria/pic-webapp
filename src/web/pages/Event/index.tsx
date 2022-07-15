@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import Logo from "react-app-images/logo.png";
 import Calender from "react-app-images/calendar.png";
 import Location from "react-app-images/location.png";
@@ -15,6 +15,7 @@ import { Link, useLocation } from "react-router-dom";
 import env from "../../../config";
 import { useParams } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
+import ModalVideo from "react-modal-video";
 // import {
 //   Carousel,
 //   CarouselItem,
@@ -27,9 +28,7 @@ const Event: React.FC = (): JSX.Element => {
   const { pathname } = useLocation();
   const response = useStoreState((state) => state.detail.eventResponse);
   const getEvent = useStoreActions((action) => action.detail.getEvent);
-  const [sliderInterval, setSliderInterval] = useState<any>(0);
-
- // const { getVideoDurationInSeconds } = require("get-video-duration");
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
 
   const getEventDetail = useCallback(async (payload) => {
     await getEvent({
@@ -54,6 +53,7 @@ const Event: React.FC = (): JSX.Element => {
       (options?.height || "")
     );
   };
+
   const minValue = (data: any) => {
     let min = data.reduce(function (res: any, obj: any) {
       return obj.amount < res.amount ? obj : res;
@@ -75,39 +75,53 @@ const Event: React.FC = (): JSX.Element => {
   const carouselItemData =
     eventImages?.length &&
     eventImages?.map((item: any, i: number) => {
-      // item?.type === "video"
-      //   ? getVideoDurationInSeconds(env?.REACT_APP_VIDEO_URL+item?.name).then((duration:any) => {
-      //     console.log(duration)
-      //   })
-        
-        
-      //   : setSliderInterval(5000);
       return (
-        <Carousel.Item>
+        <Carousel.Item key={i}>
           {item?.type === "video" ? (
-            <LazyLoadImage
-                  wrapperClassName={"overideImageCircle"}
-                  effect={item?.name ? "blur" : undefined}
-                  style={{
-                    position: "absolute",
-                  }}
-                  src={
-                    item?.name
-                      ? env?.REACT_APP_VIDEO_URL+ (item?.name?.substring(0, item?.name?.lastIndexOf("."))) + "-00001.png"
-                      : DEFAULT_IMAGE
-                  }
-                  className="d-block w-100 blurImage"
-                  alt="..."
-                />
-
-
-            // <video controls={true} autoPlay={true} className="videoControl">
+            <>
+              {/* <ModalVideo
+                url={env?.REACT_APP_VIDEO_URL + item?.name}
+                isOpen={isVideoPlaying}
+                onClose={() => setIsVideoPlaying(false)}
+              /> */}
+              <LazyLoadImage
+                wrapperClassName={"overideImageCircle"}
+                effect={item?.name ? "blur" : undefined}
+                style={{
+                  position: "absolute",
+                }}
+                src={
+                  item?.name
+                    ? env?.REACT_APP_VIDEO_URL +
+                      item?.name?.substring(0, item?.name?.lastIndexOf(".")) +
+                      "-00001.png"
+                    : DEFAULT_IMAGE
+                }
+                className="d-block w-100 blurImage"
+                alt="..."
+              />
+              <LazyLoadImage
+                wrapperClassName={"overideImageCircle"}
+                placeholderSrc={DEFAULT_IMAGE}
+                effect={item?.name ? "blur" : undefined}
+                src={
+                  item?.name
+                    ? env?.REACT_APP_VIDEO_URL +
+                      item?.name?.substring(0, item?.name?.lastIndexOf(".")) +
+                      "-00001.png"
+                    : DEFAULT_IMAGE
+                }
+                className="d-block w-100"
+                alt="..."
+              />
+            </>
+          ) : (
+            // <video controls={true} autoPlay={true} className="videoControl" ref={videoRef}>
             //   <source
             //     src={env?.REACT_APP_VIDEO_URL + item?.name}
             //     type="video/mp4"
             //   />
             // </video>
-          ) : (
             item?.name && (
               <>
                 <LazyLoadImage
@@ -147,48 +161,6 @@ const Event: React.FC = (): JSX.Element => {
             )
           )}
         </Carousel.Item>
-
-        // <CarouselItem
-        //   key={i}
-        //   onExited={() => setAnimating(false)}
-        //   onExiting={() => setAnimating(true)}
-        // >
-        //   {item?.name && (
-        //     <LazyLoadImage
-        //       wrapperClassName={"overideImageCircle"}
-        //       effect={item?.name ? "blur" : undefined}
-        //       style={{
-        //         position: "absolute",
-        //       }}
-        //       src={
-        //         item?.name
-        //           ? getImageUrl(item?.name, {
-        //               type: "events",
-        //               width: 800,
-        //             })
-        //           : DEFAULT_IMAGE
-        //       }
-        //       className="d-block w-100 blurImage"
-        //       alt="..."
-        //     />
-        //   )}
-
-        //   <LazyLoadImage
-        //     wrapperClassName={"overideImageCircle"}
-        //     placeholderSrc={DEFAULT_IMAGE}
-        //     effect={item?.name ? "blur" : undefined}
-        //     src={
-        //       item?.name
-        //         ? getImageUrl(item?.name, {
-        //             type: "events",
-        //             width: 800,
-        //           })
-        //         : DEFAULT_IMAGE
-        //     }
-        //     className="d-block w-100"
-        //     alt="..."
-        //   />
-        // </CarouselItem>
       );
     });
 
