@@ -221,15 +221,15 @@ const Event: React.FC = (): JSX.Element => {
                       {response?.ticket_type === "multiple"
                         ? response?.event_currency !== "usd"
                           ? `${minValue(
-                              response?.ticket_plans
-                            )?.currency?.toUpperCase()} ${
-                              minValue(response?.ticket_plans)?.amount
+                              response?.ticket_plans   
+                            )?.currency?.toUpperCase()} ${    
+                              parseFloat(minValue(response?.ticket_plans)?.amount)?.toFixed(2)
                             }`
-                          : `$${minValue(response?.ticket_plans)?.amount}`
+                          : `$${parseFloat(minValue(response?.ticket_plans)?.amount)?.toFixed(2)}`
                         : response?.event_currency === "usd"
-                        ? `$${response?.event_fees}` || ""
+                        ? `$${parseFloat(response?.event_fees)?.toFixed(2)}` || ""
                         : `${response?.event_currency?.toUpperCase() || ""} ${
-                            response?.event_fees || "N/A"
+                          parseFloat(response?.event_fees)?.toFixed(2) || "N/A"
                           }`}
                     </span>
                     <label className="eventSectionLabel eventPrice">
@@ -346,8 +346,8 @@ const Event: React.FC = (): JSX.Element => {
                       <label>{val?.name}</label>
                       <span>
                         {val?.currency === "usd"
-                          ? `$${val?.amount}`
-                          : `${val?.currency?.toUpperCase()} ${val?.amount}`}
+                          ? `$${parseFloat(val?.amount)?.toFixed(2)}`
+                          : `${val?.currency?.toUpperCase()} ${parseFloat(val?.amount)?.toFixed(2)}`}
                       </span>
                     </div>
                   );
