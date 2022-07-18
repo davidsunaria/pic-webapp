@@ -176,15 +176,20 @@ const Event: React.FC = (): JSX.Element => {
     }
   }, [pathname]);
 
-  const mapOpen = () =>{
-    window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`
-  }
+  const mapOpen = () => {
+    window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`;
+  };
   return (
     <>
       <div className="BGColor"></div>
 
       <Modal show={isVideoPlaying} className="videoModal" onHide={handleClose}>
-        <img src={CLOSEVIDEO_IMAGE} alt="" className="closeVideo" onClick={handleClose}/>
+        <img
+          src={CLOSEVIDEO_IMAGE}
+          alt=""
+          className="closeVideo"
+          onClick={handleClose}
+        />
         <video controls={true} autoPlay={true} className="videoControl">
           <source
             src={env?.REACT_APP_VIDEO_URL + videoAddress}
@@ -225,15 +230,19 @@ const Event: React.FC = (): JSX.Element => {
                       {response?.ticket_type === "multiple"
                         ? response?.event_currency !== "usd"
                           ? `${minValue(
-                              response?.ticket_plans   
-                            )?.currency?.toUpperCase()} ${    
-                              parseFloat(minValue(response?.ticket_plans)?.amount)?.toFixed(2)
-                            }`
-                          : `$${parseFloat(minValue(response?.ticket_plans)?.amount)?.toFixed(2)}`
+                              response?.ticket_plans
+                            )?.currency?.toUpperCase()} ${parseFloat(
+                              minValue(response?.ticket_plans)?.amount
+                            )?.toFixed(2)}`
+                          : `$${parseFloat(
+                              minValue(response?.ticket_plans)?.amount
+                            )?.toFixed(2)}`
                         : response?.event_currency === "usd"
-                        ? `$${parseFloat(response?.event_fees)?.toFixed(2)}` || ""
+                        ? `$${parseFloat(response?.event_fees)?.toFixed(2)}` ||
+                          ""
                         : `${response?.event_currency?.toUpperCase() || ""} ${
-                          parseFloat(response?.event_fees)?.toFixed(2) || "N/A"
+                            parseFloat(response?.event_fees)?.toFixed(2) ||
+                            "N/A"
                           }`}
                     </span>
                     <label className="eventSectionLabel eventPrice">
@@ -307,9 +316,16 @@ const Event: React.FC = (): JSX.Element => {
                     <img src={Location} alt="..." />
                   </i>
                   <div className="eventInfoLabelOuter">
-                    <label className="eventInfoLabel linkColor" onClick={mapOpen}>
-                      {response?.address ? response?.address : "N/A"}
-                    </label>
+                    {response?.address ? (
+                      <label
+                        className="eventInfoLabel linkColor"
+                        onClick={mapOpen}
+                      >
+                        {response?.address}
+                      </label>
+                    ) : (
+                      <label className="eventInfoLabel">{"N/A"}</label>
+                    )}
                   </div>
                 </div>
               </div>
@@ -337,13 +353,17 @@ const Event: React.FC = (): JSX.Element => {
             <p className="simpleText py-3">
               {response?.short_description ? response?.short_description : ""}
             </p>
-            { response && response?.is_free_event===0 && response?.ticket_plans?.length ? (
+            {response &&
+            response?.is_free_event === 0 &&
+            response?.ticket_plans?.length ? (
               <div className="subtitle">Ticket Plans</div>
             ) : (
               <></>
             )}
             <div className="priceList">
-              {response && response?.is_free_event===0 && response?.ticket_plans?.length ? (
+              {response &&
+              response?.is_free_event === 0 &&
+              response?.ticket_plans?.length ? (
                 response?.ticket_plans.map((val: any, i: number) => {
                   return (
                     <div key={i} className="priceListSection">
@@ -351,7 +371,9 @@ const Event: React.FC = (): JSX.Element => {
                       <span>
                         {val?.currency === "usd"
                           ? `$${parseFloat(val?.amount)?.toFixed(2)}`
-                          : `${val?.currency?.toUpperCase()} ${parseFloat(val?.amount)?.toFixed(2)}`}
+                          : `${val?.currency?.toUpperCase()} ${parseFloat(
+                              val?.amount
+                            )?.toFixed(2)}`}
                       </span>
                     </div>
                   );
