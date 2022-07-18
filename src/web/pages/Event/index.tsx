@@ -175,6 +175,10 @@ const Event: React.FC = (): JSX.Element => {
       window.location.replace(env?.REACT_APP_ANDROID_URL || "");
     }
   }, [pathname]);
+
+  const mapOpen = () =>{
+    window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`
+  }
   return (
     <>
       <div className="BGColor"></div>
@@ -303,7 +307,7 @@ const Event: React.FC = (): JSX.Element => {
                     <img src={Location} alt="..." />
                   </i>
                   <div className="eventInfoLabelOuter">
-                    <label className="eventInfoLabel">
+                    <label className="eventInfoLabel linkColor" onClick={mapOpen}>
                       {response?.address ? response?.address : "N/A"}
                     </label>
                   </div>
