@@ -168,6 +168,26 @@ const Event: React.FC = (): JSX.Element => {
       );
     });
 
+  const getMinimumValue = (res: any) => {
+    if (Object.keys(res).length === 0) {
+      return "N/A";
+    } else {
+      return res?.ticket_type === "multiple"
+        ? res?.event_currency !== "usd"
+          ? `${minValue(
+              res?.ticket_plans
+            )?.currency?.toUpperCase()} ${parseFloat(
+              minValue(res?.ticket_plans)?.amount
+            )?.toFixed(2)}`
+          : `$${parseFloat(minValue(res?.ticket_plans)?.amount)?.toFixed(2)}`
+        : res?.event_currency === "usd"
+        ? `$${parseFloat(res?.event_fees)?.toFixed(2)}` || ""
+        : `${res?.event_currency?.toUpperCase() || ""} ${
+            parseFloat(res?.event_fees)?.toFixed(2) || "N/A"
+          }`;
+    }
+  };
+
   useEffect(() => {
     if (pathname === "/event/appstore")
       window.location.replace(env.REACT_APP_IOS_URL || "");
@@ -227,23 +247,7 @@ const Event: React.FC = (): JSX.Element => {
                 ) : (
                   <>
                     <span className="eventSectionSpan">
-                      {response?.ticket_type === "multiple"
-                        ? response?.event_currency !== "usd"
-                          ? `${minValue(
-                              response?.ticket_plans
-                            )?.currency?.toUpperCase()} ${parseFloat(
-                              minValue(response?.ticket_plans)?.amount
-                            )?.toFixed(2)}`
-                          : `$${parseFloat(
-                              minValue(response?.ticket_plans)?.amount
-                            )?.toFixed(2)}`
-                        : response?.event_currency === "usd"
-                        ? `$${parseFloat(response?.event_fees)?.toFixed(2)}` ||
-                          ""
-                        : `${response?.event_currency?.toUpperCase() || ""} ${
-                            parseFloat(response?.event_fees)?.toFixed(2) ||
-                            "N/A"
-                          }`}
+                      {getMinimumValue(response)}
                     </span>
                     <label className="eventSectionLabel eventPrice">
                       Per person
