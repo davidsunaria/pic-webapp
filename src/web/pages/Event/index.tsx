@@ -333,13 +333,13 @@ const Event: React.FC = (): JSX.Element => {
             <p className="simpleText py-3">
               {response?.short_description ? response?.short_description : ""}
             </p>
-            {response?.ticket_plans?.length ? (
+            { response && response?.is_free_event===0 && response?.ticket_plans?.length ? (
               <div className="subtitle">Ticket Plans</div>
             ) : (
               <></>
             )}
             <div className="priceList">
-              {response && response?.ticket_plans?.length ? (
+              {response && response?.is_free_event===0 && response?.ticket_plans?.length ? (
                 response?.ticket_plans.map((val: any, i: number) => {
                   return (
                     <div key={i} className="priceListSection">
