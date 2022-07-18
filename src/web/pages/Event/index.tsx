@@ -169,7 +169,7 @@ const Event: React.FC = (): JSX.Element => {
     });
 
   const getMinimumValue = (res: any) => {
-    if (res && Object.keys(res).length === 0) {
+    if (!res || Object.keys(res)?.length === 0) {
       return "N/A";
     } else {
       return res?.ticket_type === "multiple"
