@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import DEFAULT_IMAGE from "react-app-images/default.png";
 import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
+import CATEGORIES_IMAGE from "react-app-images/ic_briefcase.png";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link ,useLocation} from "react-router-dom";
 const Group: React.FC = (): JSX.Element => {
@@ -101,7 +102,7 @@ const Group: React.FC = (): JSX.Element => {
                 <label className="eventSectionLabel">{response?.city}</label>
               </section>
               <section className="eventSection">
-                <div className="groupTag">{response?.category || "N/A"}</div>
+                <div className="groupTag"><img src={CATEGORIES_IMAGE} width="20" className="me-2 img-fluid" alt=""/>{response?.category || "N/A"}</div>
                 <label className="eventSectionLabel eventPrice">
                   FM frequency: {response?.radio_frequency || "N/A"}
                 </label>
