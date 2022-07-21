@@ -201,6 +201,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
       p{
         color:$font-color;
         font-size: 13px;
+        margin:0px;
       }
     }
   }
@@ -329,7 +330,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     max-width: 800px;
   }
   video{
-    height:auto;
+    height: auto;
+    width: 100%;
+    max-height: 500px;
+    // object-fit: cover;
+    // object-position: center;
   }
 }
 .playIcon{

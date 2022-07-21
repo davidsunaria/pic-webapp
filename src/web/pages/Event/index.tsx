@@ -6,6 +6,7 @@ import Clock from "react-app-images/clock.png";
 import Ticket from "react-app-images/Ticket.png";
 import User from "react-app-images/user.png";
 import DEFAULT_IMAGE from "react-app-images/default.png";
+import MOBILE_IMAGE from "react-app-images/mobile-default.png";
 import PLAY_IMAGE from "react-app-images/play.png";
 import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
@@ -26,6 +27,9 @@ const Event: React.FC = (): JSX.Element => {
   const getEvent = useStoreActions((action) => action.detail.getEvent);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [videoAddress, setVideoAddress] = useState<any>("");
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [windowHeight, setWindowHeight] = useState<number>(0)
+  const [mobileView, setMobileView] = useState<boolean>(true);
 
   //  const [show, setShow] = useState(false);
 
@@ -55,6 +59,26 @@ const Event: React.FC = (): JSX.Element => {
       (options?.height || "")
     );
   };
+
+  useEffect(()=>{
+   if(  windowWidth<500){
+     setMobileView(true)
+   }
+   else{
+    setMobileView(false)
+   }
+  },[windowWidth])
+
+  let resizeWindow = () => {
+    setWindowWidth(window.innerWidth);
+    setWindowHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    resizeWindow();
+    window.addEventListener("resize", resizeWindow);
+    return () => window.removeEventListener("resize", resizeWindow);
+  }, []);
 
   const minValue = (data: any) => {
     let min = data.reduce(function (res: any, obj: any) {
@@ -113,7 +137,7 @@ const Event: React.FC = (): JSX.Element => {
               />
               <LazyLoadImage
                 wrapperClassName={"overideImageCircle"}
-                placeholderSrc={DEFAULT_IMAGE}
+                placeholderSrc={mobileView?MOBILE_IMAGE:DEFAULT_IMAGE}
                 effect={item?.name ? "blur" : undefined}
                 src={
                   item?.name
@@ -148,7 +172,7 @@ const Event: React.FC = (): JSX.Element => {
                 />
                 <LazyLoadImage
                   wrapperClassName={"overideImageCircle"}
-                  placeholderSrc={DEFAULT_IMAGE}
+                  placeholderSrc={mobileView?MOBILE_IMAGE:DEFAULT_IMAGE}
                   effect={item?.name ? "blur" : undefined}
                   src={
                     item?.name
@@ -199,6 +223,8 @@ const Event: React.FC = (): JSX.Element => {
   const mapOpen = () => {
     window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`;
   };
+
+  
   return (
     <>
       <div className="BGColor"></div>
@@ -388,7 +414,7 @@ const Event: React.FC = (): JSX.Element => {
             </div>
 
             <div className="row mt-2">
-              <div className="col-sm-4">
+              <div className="col-sm-6">
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">
                     Event hosted by
@@ -421,7 +447,7 @@ const Event: React.FC = (): JSX.Element => {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-6">
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">Group</label>
                   <div>
@@ -442,16 +468,17 @@ const Event: React.FC = (): JSX.Element => {
                       className="hostedByLabelImg"
                     />
                     <span className="hostedBySpan">
-                      <b>
-                        {response?.event_group?.name
-                          ? response?.event_group?.name
-                          : "N/A"}
-                      </b>
-                      <p>
-                        {response?.event_group?.city
-                          ? response?.event_group?.city
-                          : ""}
-                      </p>
+                      {response?.event_group?.name ? (
+                        <b>{response?.event_group?.name}</b>
+                      ) : (
+                        "N/A"
+                      )}
+
+                      {response?.event_group?.city ? (
+                        <p>{response?.event_group?.city}</p>
+                      ) : (
+                        ""
+                      )}
                     </span>
                   </div>
                 </div>
