@@ -4,6 +4,11 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
+    "@formatjs/intl-datetimeformat": "^6.0.3",
+    "@formatjs/intl-getcanonicallocales": "^2.0.2",
+    "@formatjs/intl-locale": "^3.0.3",
+    "@formatjs/intl-numberformat": "^8.0.4",
+    "@formatjs/intl-pluralrules": "^5.0.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.14.1",

@@ -8,6 +8,18 @@ import { BrowserRouter } from "react-router-dom"
 import { ToastContainer, Zoom } from 'react-toastify';
 import "./index.scss";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+import '@formatjs/intl-getcanonicallocales/polyfill';
+import '@formatjs/intl-locale/polyfill';
+import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/locale-data/en';
+import '@formatjs/intl-pluralrules/locale-data/es';
+import '@formatjs/intl-numberformat/polyfill';
+import '@formatjs/intl-numberformat/locale-data/en'
+import '@formatjs/intl-numberformat/locale-data/es'
+
+
 function WaitForStateRehydration({ children }: {children: any}) {
   const isRehydrated = useStoreRehydrated();
   return isRehydrated ? children : null;

@@ -28,7 +28,7 @@ const Event: React.FC = (): JSX.Element => {
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [videoAddress, setVideoAddress] = useState<any>("");
   const [windowWidth, setWindowWidth] = useState<number>(0);
-  const [windowHeight, setWindowHeight] = useState<number>(0)
+  const [windowHeight, setWindowHeight] = useState<number>(0);
   const [mobileView, setMobileView] = useState<boolean>(true);
 
   //  const [show, setShow] = useState(false);
@@ -60,14 +60,13 @@ const Event: React.FC = (): JSX.Element => {
     );
   };
 
-  useEffect(()=>{
-   if(  windowWidth<500){
-     setMobileView(true)
-   }
-   else{
-    setMobileView(false)
-   }
-  },[windowWidth])
+  useEffect(() => {
+    if (windowWidth < 500) {
+      setMobileView(true);
+    } else {
+      setMobileView(false);
+    }
+  }, [windowWidth]);
 
   let resizeWindow = () => {
     setWindowWidth(window.innerWidth);
@@ -137,7 +136,7 @@ const Event: React.FC = (): JSX.Element => {
               />
               <LazyLoadImage
                 wrapperClassName={"overideImageCircle"}
-                placeholderSrc={mobileView?MOBILE_IMAGE:DEFAULT_IMAGE}
+                placeholderSrc={mobileView ? MOBILE_IMAGE : DEFAULT_IMAGE}
                 effect={item?.name ? "blur" : undefined}
                 src={
                   item?.name
@@ -172,7 +171,7 @@ const Event: React.FC = (): JSX.Element => {
                 />
                 <LazyLoadImage
                   wrapperClassName={"overideImageCircle"}
-                  placeholderSrc={mobileView?MOBILE_IMAGE:DEFAULT_IMAGE}
+                  placeholderSrc={mobileView ? MOBILE_IMAGE : DEFAULT_IMAGE}
                   effect={item?.name ? "blur" : undefined}
                   src={
                     item?.name
@@ -193,6 +192,23 @@ const Event: React.FC = (): JSX.Element => {
     });
 
   const getMinimumValue = (res: any) => {
+    let price = parseFloat(res?.event_fees || "0");
+    let currency = res?.event_currency?.toUpperCase()
+    if (res?.ticket_type === "multiple") {
+      price = parseFloat(minValue(res?.ticket_plans)?.amount || "0");
+      currency = minValue(
+        res?.ticket_plans
+      )?.currency?.toUpperCase()
+    }
+
+    const formattedPrice = price?.toLocaleString("en",{
+      currency,
+      style:'currency',
+    })
+
+    
+
+    return formattedPrice;
     if (!res || Object.keys(res)?.length === 0) {
       return "N/A";
     } else {
@@ -224,7 +240,6 @@ const Event: React.FC = (): JSX.Element => {
     window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`;
   };
 
-  
   return (
     <>
       <div className="BGColor"></div>
@@ -398,12 +413,19 @@ const Event: React.FC = (): JSX.Element => {
                   return (
                     <div key={i} className="priceListSection">
                       <label>{val?.name}</label>
-                      <span>
+                      {/* <span>
                         {val?.currency === "usd"
                           ? `$${parseFloat(val?.amount)?.toFixed(2)}`
                           : `${val?.currency?.toUpperCase()} ${parseFloat(
                               val?.amount
                             )?.toFixed(2)}`}
+                      </span> */}
+                      <span>
+                        { parseFloat(val?.amount || "0")?.toLocaleString("en",{
+                           currency: val?.currency?.toUpperCase(),
+                            style:'currency',
+                          })} 
+                          
                       </span>
                     </div>
                   );
