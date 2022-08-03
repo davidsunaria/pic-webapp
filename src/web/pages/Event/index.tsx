@@ -192,23 +192,23 @@ const Event: React.FC = (): JSX.Element => {
     });
 
   const getMinimumValue = (res: any) => {
-    let price = parseFloat(res?.event_fees || "0");
-    let currency = res?.event_currency?.toUpperCase()
-    if (res?.ticket_type === "multiple") {
-      price = parseFloat(minValue(res?.ticket_plans)?.amount || "0");
-      currency = minValue(
-        res?.ticket_plans
-      )?.currency?.toUpperCase()
-    }
+    // let price = parseFloat(res?.event_fees || "0");
+    // let currency = res?.event_currency?.toUpperCase()
+    // if (res?.ticket_type === "multiple") {
+    //   price = parseFloat(minValue(res?.ticket_plans)?.amount || "0");
+    //   currency = minValue(
+    //     res?.ticket_plans
+    //   )?.currency?.toUpperCase()
+    // }
 
-    const formattedPrice = price?.toLocaleString("en",{
-      currency,
-      style:'currency',
-    })
+    // const formattedPrice = price?.toLocaleString("en",{
+    //   currency,
+    //   style:'currency',
+    // })
 
     
 
-    return formattedPrice;
+    // return formattedPrice;
     if (!res || Object.keys(res)?.length === 0) {
       return "N/A";
     } else {
@@ -413,20 +413,20 @@ const Event: React.FC = (): JSX.Element => {
                   return (
                     <div key={i} className="priceListSection">
                       <label>{val?.name}</label>
-                      {/* <span>
+                      <span>
                         {val?.currency === "usd"
                           ? `$${parseFloat(val?.amount)?.toFixed(2)}`
                           : `${val?.currency?.toUpperCase()} ${parseFloat(
                               val?.amount
                             )?.toFixed(2)}`}
-                      </span> */}
-                      <span>
+                      </span>
+                      {/* <span>
                         { parseFloat(val?.amount || "0")?.toLocaleString("en",{
                            currency: val?.currency?.toUpperCase(),
                             style:'currency',
                           })} 
                           
-                      </span>
+                      </span> */}
                     </div>
                   );
                 })
