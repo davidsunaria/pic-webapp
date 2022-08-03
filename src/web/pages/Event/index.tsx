@@ -192,40 +192,44 @@ const Event: React.FC = (): JSX.Element => {
     });
 
   const getMinimumValue = (res: any) => {
-    // let price = parseFloat(res?.event_fees || "0");
-    // let currency = res?.event_currency?.toUpperCase()
-    // if (res?.ticket_type === "multiple") {
-    //   price = parseFloat(minValue(res?.ticket_plans)?.amount || "0");
-    //   currency = minValue(
-    //     res?.ticket_plans
-    //   )?.currency?.toUpperCase()
-    // }
+    if (!res || Object.keys(res)?.length === 0) {
+         return "N/A";
+       }
+    let price = parseFloat(res?.event_fees || "0");
+    let currency = res?.event_currency?.toUpperCase()
+    if (res?.ticket_type === "multiple") {
+      price = parseFloat(minValue(res?.ticket_plans)?.amount || "0");
+      currency = minValue(
+        res?.ticket_plans
+      )?.currency?.toUpperCase()
+    }
 
-    // const formattedPrice = price?.toLocaleString("en",{
-    //   currency,
-    //   style:'currency',
-    // })
+    
+    const formattedPrice = price?.toLocaleString("en",{
+      currency:currency?.toUpperCase(),
+      style:'currency',
+    })
 
     
 
-    // return formattedPrice;
-    if (!res || Object.keys(res)?.length === 0) {
-      return "N/A";
-    } else {
-      return res?.ticket_type === "multiple"
-        ? res?.event_currency !== "usd"
-          ? `${minValue(
-              res?.ticket_plans
-            )?.currency?.toUpperCase()} ${parseFloat(
-              minValue(res?.ticket_plans)?.amount
-            )?.toFixed(2)}`
-          : `$${parseFloat(minValue(res?.ticket_plans)?.amount)?.toFixed(2)}`
-        : res?.event_currency === "usd"
-        ? `$${parseFloat(res?.event_fees)?.toFixed(2)}` || ""
-        : `${res?.event_currency?.toUpperCase() || ""} ${
-            parseFloat(res?.event_fees)?.toFixed(2) || "N/A"
-          }`;
-    }
+    return formattedPrice;
+    // if (!res || Object.keys(res)?.length === 0) {
+    //   return "N/A";
+    // } else {
+    //   return res?.ticket_type === "multiple"
+    //     ? res?.event_currency !== "usd"
+    //       ? `${minValue(
+    //           res?.ticket_plans
+    //         )?.currency?.toUpperCase()} ${parseFloat(
+    //           minValue(res?.ticket_plans)?.amount
+    //         )?.toFixed(2)}`
+    //       : `$${parseFloat(minValue(res?.ticket_plans)?.amount)?.toFixed(2)}`
+    //     : res?.event_currency === "usd"
+    //     ? `$${parseFloat(res?.event_fees)?.toFixed(2)}` || ""
+    //     : `${res?.event_currency?.toUpperCase() || ""} ${
+    //         parseFloat(res?.event_fees)?.toFixed(2) || "N/A"
+    //       }`;
+    // }
   };
 
   useEffect(() => {
@@ -413,20 +417,20 @@ const Event: React.FC = (): JSX.Element => {
                   return (
                     <div key={i} className="priceListSection">
                       <label>{val?.name}</label>
-                      <span>
+                      {/* <span>
                         {val?.currency === "usd"
                           ? `$${parseFloat(val?.amount)?.toFixed(2)}`
                           : `${val?.currency?.toUpperCase()} ${parseFloat(
                               val?.amount
                             )?.toFixed(2)}`}
-                      </span>
-                      {/* <span>
+                      </span> */}
+                      <span>
                         { parseFloat(val?.amount || "0")?.toLocaleString("en",{
                            currency: val?.currency?.toUpperCase(),
                             style:'currency',
                           })} 
                           
-                      </span> */}
+                      </span>
                     </div>
                   );
                 })
