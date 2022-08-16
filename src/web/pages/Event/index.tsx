@@ -193,24 +193,19 @@ const Event: React.FC = (): JSX.Element => {
 
   const getMinimumValue = (res: any) => {
     if (!res || Object.keys(res)?.length === 0) {
-         return "N/A";
-       }
+      return "N/A";
+    }
     let price = parseFloat(res?.event_fees || "0");
-    let currency = res?.event_currency?.toUpperCase()
+    let currency = res?.event_currency?.toUpperCase();
     if (res?.ticket_type === "multiple") {
       price = parseFloat(minValue(res?.ticket_plans)?.amount || "0");
-      currency = minValue(
-        res?.ticket_plans
-      )?.currency?.toUpperCase()
+      currency = minValue(res?.ticket_plans)?.currency?.toUpperCase();
     }
 
-    
-    const formattedPrice = price?.toLocaleString("en",{
-      currency:currency?.toUpperCase(),
-      style:'currency',
-    })
-
-    
+    const formattedPrice = price?.toLocaleString("en", {
+      currency: currency?.toUpperCase(),
+      style: "currency",
+    });
 
     return formattedPrice;
     // if (!res || Object.keys(res)?.length === 0) {
@@ -314,15 +309,36 @@ const Event: React.FC = (): JSX.Element => {
                       .format("LL")
                       .toString() !==
                     moment(response?.event_end_date_time).format("LL") ? (
-                      <p className="eventInfoP">Start Date</p>
+                      <p className="eventInfoP">Start Date </p>
                     ) : (
                       ""
                     )}
-                    <label className="eventInfoLabel">
-                      {response?.event_start_date_time
-                        ? moment(response?.event_start_date_time).format("LL")
-                        : "N/A"}
-                    </label>
+                    {response?.is_multi_day_event ? (
+                      <>
+                        {" "}
+                        <label className="eventInfoLabel">
+                          {response?.event_start_date_time
+                            ? moment(response?.event_start_date_time).format(
+                                "LL"
+                              )
+                            : "N/A"}
+                        </label>{" "}
+                        |&nbsp;
+                        <label className="eventInfoLabel">
+                          {response?.event_end_date_time
+                            ? moment(response?.event_start_date_time).format(
+                                "LT"
+                              )
+                            : "N/A"}
+                        </label>
+                      </>
+                    ) : (
+                      <label className="eventInfoLabel">
+                        {response?.event_start_date_time
+                          ? moment(response?.event_start_date_time).format("LL")
+                          : "N/A"}
+                      </label>
+                    )}
                   </div>
                 </div>
               </div>
@@ -338,7 +354,7 @@ const Event: React.FC = (): JSX.Element => {
                     <div className="eventInfoLabelOuter">
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
-                          ? moment(response?.event_end_date_time).format("LT")
+                          ? moment(response?.event_start_date_time).format("LT")
                           : "N/A"}
                       </label>
                     </div>
@@ -349,10 +365,16 @@ const Event: React.FC = (): JSX.Element => {
                       <img src={Calender} alt="..." />
                     </i>
                     <div className="eventInfoLabelOuter">
-                      <p className="eventInfoP">End Date</p>
+                      <p className="eventInfoP">End Date </p>
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
                           ? moment(response?.event_end_date_time).format("LL")
+                          : "N/A"}
+                      </label>{" "}
+                      |&nbsp;
+                      <label className="eventInfoLabel">
+                        {response?.event_end_date_time
+                          ? moment(response?.event_end_date_time).format("LT")
                           : "N/A"}
                       </label>
                     </div>
@@ -425,11 +447,10 @@ const Event: React.FC = (): JSX.Element => {
                             )?.toFixed(2)}`}
                       </span> */}
                       <span>
-                        { parseFloat(val?.amount || "0")?.toLocaleString("en",{
-                           currency: val?.currency?.toUpperCase(),
-                            style:'currency',
-                          })} 
-                          
+                        {parseFloat(val?.amount || "0")?.toLocaleString("en", {
+                          currency: val?.currency?.toUpperCase(),
+                          style: "currency",
+                        })}
                       </span>
                     </div>
                   );
