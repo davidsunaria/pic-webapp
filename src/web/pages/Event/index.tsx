@@ -19,6 +19,26 @@ import env from "../../../config";
 import { useParams } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import Modal from "react-bootstrap/Modal";
+import tzlookup from "tz-lookup";
+
+export const getFormattedAmount = (currency:string='usd',amount:string|number=0)=>{
+ 
+  const getLocale = () => {
+    switch (currency?.toUpperCase()) {
+      case "GBP":
+        return "en-GB";
+      case "EUR":
+        return "de";
+      default:
+        return "en-US";
+    }
+  };
+
+  return parseFloat(amount?.toString())?.toLocaleString(getLocale(), {
+    currency: currency?.toUpperCase(),
+    style: "currency",
+  });
+}
 
 const Event: React.FC = (): JSX.Element => {
   const { id } = useParams();
@@ -32,7 +52,7 @@ const Event: React.FC = (): JSX.Element => {
   const [mobileView, setMobileView] = useState<boolean>(true);
 
   //  const [show, setShow] = useState(false);
-
+ // console.log("respnse", response?.location?.coordinates);
   const handleClose = () => setIsVideoPlaying(false);
   const handleShow = () => setIsVideoPlaying(true);
 
@@ -42,6 +62,16 @@ const Event: React.FC = (): JSX.Element => {
       payload,
     });
   }, []);
+
+  // useEffect(() => {
+  //   console.log(
+  //     tzlookup(
+  //       response?.location?.coordinates[1],
+  //       response?.location?.coordinates[0]
+  //     )
+  //   );
+  
+  // }, []);
 
   useEffect(() => {
     getEventDetail({ _id: id });
@@ -79,9 +109,9 @@ const Event: React.FC = (): JSX.Element => {
     return () => window.removeEventListener("resize", resizeWindow);
   }, []);
 
-  const minValue = (data: any) => {
-    let min = data.reduce(function (res: any, obj: any) {
-      return obj.amount < res.amount ? obj : res;
+  const minValue = (data: any[]) => {
+    let min = data?.reduce(function (res: any, obj: any) {
+      return obj?.amount < res?.amount ? obj : res;
     });
     return min;
   };
@@ -192,22 +222,16 @@ const Event: React.FC = (): JSX.Element => {
     });
 
   const getMinimumValue = (res: any) => {
-    if (!res || Object.keys(res)?.length === 0) {
+    if (!res || Object.keys(res)?.length === 0 || res == undefined ) {
       return "N/A";
     }
-    let price = parseFloat(res?.event_fees || "0");
-    let currency = res?.event_currency?.toUpperCase();
+    let price = (res?.event_fees);
+    let currency = res?.event_currency
     if (res?.ticket_type === "multiple") {
-      price = parseFloat(minValue(res?.ticket_plans)?.amount || "0");
-      currency = minValue(res?.ticket_plans)?.currency?.toUpperCase();
+      price = (minValue(res?.ticket_plans)?.amount);
+      currency = minValue(res?.ticket_plans)?.currency;
     }
-
-    const formattedPrice = price?.toLocaleString("en", {
-      currency: currency?.toUpperCase(),
-      style: "currency",
-    });
-
-    return formattedPrice;
+    return getFormattedAmount(currency,price);
     // if (!res || Object.keys(res)?.length === 0) {
     //   return "N/A";
     // } else {
@@ -238,6 +262,12 @@ const Event: React.FC = (): JSX.Element => {
   const mapOpen = () => {
     window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`;
   };
+
+//   function convertTZ(date:any, tzString:any) {
+//     return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
+// }
+
+// console.log(convertTZ("2012/04/20 10:10:30 +0000", "Asia/Jakarta"))
 
   return (
     <>
@@ -435,7 +465,7 @@ const Event: React.FC = (): JSX.Element => {
               {response &&
               response?.is_free_event === 0 &&
               response?.ticket_plans?.length ? (
-                response?.ticket_plans.map((val: any, i: number) => {
+                response?.ticket_plans?.map((val: any, i: number) => {
                   return (
                     <div key={i} className="priceListSection">
                       <label>{val?.name}</label>
@@ -447,10 +477,7 @@ const Event: React.FC = (): JSX.Element => {
                             )?.toFixed(2)}`}
                       </span> */}
                       <span>
-                        {parseFloat(val?.amount || "0")?.toLocaleString("en", {
-                          currency: val?.currency?.toUpperCase(),
-                          style: "currency",
-                        })}
+                        {getFormattedAmount(val?.currency,val?.amount)}
                       </span>
                     </div>
                   );
