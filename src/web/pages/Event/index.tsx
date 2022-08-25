@@ -21,8 +21,10 @@ import Carousel from "react-bootstrap/Carousel";
 import Modal from "react-bootstrap/Modal";
 import tzlookup from "tz-lookup";
 
-export const getFormattedAmount = (currency:string='usd',amount:string|number=0)=>{
- 
+export const getFormattedAmount = (
+  currency: string = "usd",
+  amount: string | number = 0
+) => {
   const getLocale = () => {
     switch (currency?.toUpperCase()) {
       case "GBP":
@@ -38,7 +40,7 @@ export const getFormattedAmount = (currency:string='usd',amount:string|number=0)
     currency: currency?.toUpperCase(),
     style: "currency",
   });
-}
+};
 
 const Event: React.FC = (): JSX.Element => {
   const { id } = useParams();
@@ -52,7 +54,6 @@ const Event: React.FC = (): JSX.Element => {
   const [mobileView, setMobileView] = useState<boolean>(true);
 
   //  const [show, setShow] = useState(false);
- // console.log("respnse", response?.location?.coordinates);
   const handleClose = () => setIsVideoPlaying(false);
   const handleShow = () => setIsVideoPlaying(true);
 
@@ -63,15 +64,7 @@ const Event: React.FC = (): JSX.Element => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   console.log(
-  //     tzlookup(
-  //       response?.location?.coordinates[1],
-  //       response?.location?.coordinates[0]
-  //     )
-  //   );
-  
-  // }, []);
+  var moment = require("moment-timezone");
 
   useEffect(() => {
     getEventDetail({ _id: id });
@@ -222,16 +215,16 @@ const Event: React.FC = (): JSX.Element => {
     });
 
   const getMinimumValue = (res: any) => {
-    if (!res || Object.keys(res)?.length === 0 || res == undefined ) {
+    if (!res || Object.keys(res)?.length === 0 || res == undefined) {
       return "N/A";
     }
-    let price = (res?.event_fees);
-    let currency = res?.event_currency
+    let price = res?.event_fees;
+    let currency = res?.event_currency;
     if (res?.ticket_type === "multiple") {
-      price = (minValue(res?.ticket_plans)?.amount);
+      price = minValue(res?.ticket_plans)?.amount;
       currency = minValue(res?.ticket_plans)?.currency;
     }
-    return getFormattedAmount(currency,price);
+    return getFormattedAmount(currency, price);
     // if (!res || Object.keys(res)?.length === 0) {
     //   return "N/A";
     // } else {
@@ -262,12 +255,6 @@ const Event: React.FC = (): JSX.Element => {
   const mapOpen = () => {
     window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`;
   };
-
-//   function convertTZ(date:any, tzString:any) {
-//     return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
-// }
-
-// console.log(convertTZ("2012/04/20 10:10:30 +0000", "Asia/Jakarta"))
 
   return (
     <>
@@ -338,7 +325,7 @@ const Event: React.FC = (): JSX.Element => {
                     {moment(response?.event_start_date_time)
                       .format("LL")
                       .toString() !==
-                    moment(response?.event_end_date_time).format("LL") ? (
+                    moment(response?.event_end_date_time).format("LL") && response?.is_multi_day_event ? (
                       <p className="eventInfoP">Start Date </p>
                     ) : (
                       ""
@@ -348,19 +335,16 @@ const Event: React.FC = (): JSX.Element => {
                         {" "}
                         <label className="eventInfoLabel">
                           {response?.event_start_date_time
-                            ? moment(response?.event_start_date_time).format(
-                                "LL"
-                              )
+                            ? moment(response?.event_start_date_time)
+                                .tz(
+                                  tzlookup(
+                                    response?.location?.coordinates[1],
+                                    response?.location?.coordinates[0]
+                                  )
+                                )
+                                .format("MMMM Do YYYY h:mm a z")
                             : "N/A"}
                         </label>{" "}
-                        |&nbsp;
-                        <label className="eventInfoLabel">
-                          {response?.event_end_date_time
-                            ? moment(response?.event_start_date_time).format(
-                                "LT"
-                              )
-                            : "N/A"}
-                        </label>
                       </>
                     ) : (
                       <label className="eventInfoLabel">
@@ -384,12 +368,20 @@ const Event: React.FC = (): JSX.Element => {
                     <div className="eventInfoLabelOuter">
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
-                          ? moment(response?.event_start_date_time).format("LT")
+                          ? //moment(response?.event_start_date_time).format("LT")
+                            moment(response?.event_start_date_time)
+                              .tz(
+                                tzlookup(
+                                  response?.location?.coordinates[1],
+                                  response?.location?.coordinates[0]
+                                )
+                              )
+                              .format("h:mm a z")
                           : "N/A"}
                       </label>
                     </div>
                   </div>
-                ) : (
+                ) : response?.is_multi_day_event ? (
                   <div className="eventInfo">
                     <i>
                       <img src={Calender} alt="..." />
@@ -398,15 +390,37 @@ const Event: React.FC = (): JSX.Element => {
                       <p className="eventInfoP">End Date </p>
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
-                          ? moment(response?.event_end_date_time).format("LL")
+                          ? moment(response?.event_end_date_time)
+                              .tz(
+                                tzlookup(
+                                  response?.location?.coordinates[1],
+                                  response?.location?.coordinates[0]
+                                )
+                              )
+                              .format("MMMM Do YYYY h:mm a z")
                           : "N/A"}
                       </label>{" "}
-                      |&nbsp;
+                    </div>
+                  </div>
+                ) : (
+                  <div className="eventInfo">
+                    <i>
+                      <img src={Clock} alt="..." />
+                    </i>
+                    <div className="eventInfoLabelOuter">
+                      {/* <p className="eventInfoP">End Date </p> */}
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
-                          ? moment(response?.event_end_date_time).format("LT")
+                          ? moment(response?.event_start_date_time)
+                              .tz(
+                                tzlookup(
+                                  response?.location?.coordinates[1],
+                                  response?.location?.coordinates[0]
+                                )
+                              )
+                              .format("h:mm a z")
                           : "N/A"}
-                      </label>
+                      </label>{" "}
                     </div>
                   </div>
                 )}
@@ -477,7 +491,7 @@ const Event: React.FC = (): JSX.Element => {
                             )?.toFixed(2)}`}
                       </span> */}
                       <span>
-                        {getFormattedAmount(val?.currency,val?.amount)}
+                        {getFormattedAmount(val?.currency, val?.amount)}
                       </span>
                     </div>
                   );
