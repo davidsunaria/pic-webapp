@@ -255,7 +255,9 @@ const Event: React.FC = (): JSX.Element => {
   const mapOpen = () => {
     window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`;
   };
-
+  const getLocation = (data: any) => {
+    return data;
+  };
   return (
     <>
       <div className="BGColor"></div>
@@ -325,7 +327,8 @@ const Event: React.FC = (): JSX.Element => {
                     {moment(response?.event_start_date_time)
                       .format("LL")
                       .toString() !==
-                    moment(response?.event_end_date_time).format("LL") && response?.is_multi_day_event ? (
+                      moment(response?.event_end_date_time).format("LL") &&
+                    response?.is_multi_day_event ? (
                       <p className="eventInfoP">Start Date </p>
                     ) : (
                       ""
@@ -337,9 +340,12 @@ const Event: React.FC = (): JSX.Element => {
                           {response?.event_start_date_time
                             ? moment(response?.event_start_date_time)
                                 .tz(
-                                  tzlookup(
-                                    response?.location?.coordinates[1],
-                                    response?.location?.coordinates[0]
+                                  getLocation(
+                                    response?.event_timezone ||
+                                      tzlookup(
+                                        response?.location?.coordinates[1],
+                                        response?.location?.coordinates[0]
+                                      )
                                   )
                                 )
                                 .format("MMMM Do YYYY h:mm a z")
@@ -369,14 +375,27 @@ const Event: React.FC = (): JSX.Element => {
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
                           ? //moment(response?.event_start_date_time).format("LT")
-                            moment(response?.event_start_date_time)
+                         <>  {moment(response?.event_start_date_time)
                               .tz(
-                                tzlookup(
-                                  response?.location?.coordinates[1],
-                                  response?.location?.coordinates[0]
+                                getLocation(
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
                                 )
                               )
-                              .format("h:mm a z")
+                              .format("h:mm A")+ " to " + moment(response?.event_end_date_time)
+                              .tz(
+                                getLocation(
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
+                                )
+                              )
+                              .format("h:mm A z")}</> 
                           : "N/A"}
                       </label>
                     </div>
@@ -392,9 +411,12 @@ const Event: React.FC = (): JSX.Element => {
                         {response?.event_end_date_time
                           ? moment(response?.event_end_date_time)
                               .tz(
-                                tzlookup(
-                                  response?.location?.coordinates[1],
-                                  response?.location?.coordinates[0]
+                                getLocation(
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
                                 )
                               )
                               .format("MMMM Do YYYY h:mm a z")
@@ -413,14 +435,21 @@ const Event: React.FC = (): JSX.Element => {
                         {response?.event_end_date_time
                           ? moment(response?.event_start_date_time)
                               .tz(
-                                tzlookup(
-                                  response?.location?.coordinates[1],
-                                  response?.location?.coordinates[0]
+                                // tzlookup(
+                                //   response?.location?.coordinates[1],
+                                //   response?.location?.coordinates[0]
+                                // )
+                                getLocation(
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
                                 )
                               )
-                              .format("h:mm a z")
+                              .format("h:mm a z") 
                           : "N/A"}
-                      </label>{" "}
+                      </label>
                     </div>
                   </div>
                 )}
