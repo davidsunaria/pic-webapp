@@ -222,11 +222,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-top: 20px;
 }
 .googleAppButtonsOUter{
-  margin-top:50px;
+  margin-top:25px;
+  margin-bottom:30px;
   a{
     margin:0px 10px;
     img{
-      height:50px;
+      height:43px;
     }
   }
 }
@@ -361,4 +362,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .linkColor{
   color: blue!important;
   cursor: pointer;
+}
+.topThankyouText{
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 0px;
+  text-align:center;
+  margin-top:10px;
 }

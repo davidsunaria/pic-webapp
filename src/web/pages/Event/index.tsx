@@ -273,6 +273,8 @@ const Event: React.FC = (): JSX.Element => {
     <>
       <div className="BGColor"></div>
 
+    
+
       <Modal show={isVideoPlaying} className="videoModal" onHide={handleClose}>
         <img
           src={CLOSEVIDEO_IMAGE}
@@ -291,6 +293,15 @@ const Event: React.FC = (): JSX.Element => {
       <div className="mobileDetailWrapper">
         <div className="logoHeader">
           <img src={Logo} alt="..." />
+        </div>
+        <p className="topThankyouText">Thank you for your interest in attending this event. in order to purchase your ticket, you must first download the app and register within.</p>
+        <div className="googleAppButtonsOUter picnicEventDownloadButton">
+          <Link to="/event/googleplay">
+            <img src={GOOGLEPLAY_IMAGE} alt="" />
+          </Link>
+          <Link to="/event/appstore">
+            <img src={APPSTORE_IMAGE} alt="" />
+          </Link>
         </div>
         <div className="mobileContent picnicEventSlider">
           {carouselItemData?.length > 0 && (
@@ -564,14 +575,7 @@ const Event: React.FC = (): JSX.Element => {
             </p>
           </div>
         </div>
-        <div className="googleAppButtonsOUter picnicEventDownloadButton">
-          <Link to="/event/googleplay">
-            <img src={GOOGLEPLAY_IMAGE} alt="" />
-          </Link>
-          <Link to="/event/appstore">
-            <img src={APPSTORE_IMAGE} alt="" />
-          </Link>
-        </div>
+       
       </div>
     </>
   );

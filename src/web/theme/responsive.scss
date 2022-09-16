@@ -5,6 +5,9 @@ $text-color:#4B4B5A;
 
 
 @media(max-width:767px){
+	.topThankyouText{
+		font-size: 15px;
+	}
 	.eventTitle{
 		flex-direction: column;
 		section{
