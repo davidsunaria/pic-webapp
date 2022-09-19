@@ -294,7 +294,7 @@ const Event: React.FC = (): JSX.Element => {
         <div className="logoHeader">
           <img src={Logo} alt="..." />
         </div>
-        <p className="topThankyouText">Thank you for your interest in attending this event. in order to purchase your ticket, you must first download the app and register within.</p>
+        <p className="topThankyouText">To register for this event, download Picnic Groups and register in the app. Unlock the out & about today.</p>
         <div className="googleAppButtonsOUter picnicEventDownloadButton">
           <Link to="/event/googleplay">
             <img src={GOOGLEPLAY_IMAGE} alt="" />
@@ -569,10 +569,10 @@ const Event: React.FC = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            <div className="subtitle">About event</div>
+            {/* <div className="subtitle">About event</div>
             <p className="simpleText py-2">
               {response?.details ? response?.details : "N/A"}
-            </p>
+            </p> */}
           </div>
         </div>
        

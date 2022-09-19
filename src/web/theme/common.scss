@@ -248,6 +248,33 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   }
 }
 
+.overideGroupImageCircle {
+  display: flex !important;
+  //height: 30px !important;
+  max-width: 800px !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  max-width: 300px!important;
+  height: 300px;
+  overflow: hidden;
+  margin: auto;
+  background-size: 750px 300px!important;
+  background-position: center;
+  border-radius: 1000px!important;
+  -webkit-border-radius: 1000px!important;
+  
+
+  img {
+    object-fit: cover;
+    object-position: center;
+    height: 100%;
+    border-radius: 1000px!important;
+    -webkit-border-radius: 1000px!important;
+   
+  }
+}
+
 .priceList{
   margin-top:10px;
   display:block;

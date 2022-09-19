@@ -5,6 +5,7 @@ import { useStoreActions, useStoreState } from "react-app-store";
 import env from "../../../config";
 import { useParams } from "react-router-dom";
 import DEFAULT_IMAGE from "react-app-images/default.png";
+import GROUPDEFAULT_IMAGE from "react-app-images/Group-default.png";
 import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import CATEGORIES_IMAGE from "react-app-images/ic_briefcase.png";
@@ -53,7 +54,7 @@ const Group: React.FC = (): JSX.Element => {
         <div className="logoHeader">
           <img src={Logo} alt="" />
         </div>
-        <p className="topThankyouText">Download Picnic App</p>
+        <p className="topThankyouText">Download Picnic Groups to participate in the conversation</p>
         <div className="googleAppButtonsOUter picnicEventDownloadButton">
           <Link to="/group/googleplay">
             <img src={GOOGLEPLAY_IMAGE} alt="" />
@@ -84,8 +85,8 @@ const Group: React.FC = (): JSX.Element => {
               />
 
               <LazyLoadImage
-                wrapperClassName={"overideImageCircle"}
-                placeholderSrc={DEFAULT_IMAGE}
+                wrapperClassName={"overideGroupImageCircle"}
+                placeholderSrc={GROUPDEFAULT_IMAGE}
                 effect={response?.image ? "blur" : undefined}
                 src={
                   response?.image
@@ -93,7 +94,7 @@ const Group: React.FC = (): JSX.Element => {
                         type: "groups",
                         width: 800,
                       })
-                    : DEFAULT_IMAGE
+                    : GROUPDEFAULT_IMAGE
                 }
                 className="d-block w-100"
                 alt="..."
@@ -119,9 +120,9 @@ const Group: React.FC = (): JSX.Element => {
                   />
                   {response?.category || "N/A"}
                 </div>
-                <label className="eventSectionLabel eventPrice">
+                {/* <label className="eventSectionLabel eventPrice">
                   FM frequency: {response?.radio_frequency || "N/A"}
-                </label>
+                </label> */}
               </section>
             </div>
 
@@ -132,7 +133,7 @@ const Group: React.FC = (): JSX.Element => {
             <div className="row mt-2">
               <div className="col-sm-4">
                 <div className="hostedBy">
-                  <label className="hostedByLabel subtitle">Group Admin</label>
+                  <label className="hostedByLabel subtitle">Group Leader</label>
                   <div>
                     <LazyLoadImage
                       wrapperClassName={"overideImageCircle"}
