@@ -4,8 +4,11 @@ import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import { Link ,useLocation} from "react-router-dom";
 import env from "../../../config";
+import { useTranslation } from 'react-i18next';
+import i18next from "i18next";
 
 const Download: React.FC = (): JSX.Element => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   useEffect(() => {
     if (pathname === "/download/appstore")
@@ -14,6 +17,10 @@ const Download: React.FC = (): JSX.Element => {
       window.location.replace(env?.REACT_APP_ANDROID_URL || "");
     }
   }, [pathname]);
+
+  useEffect(() => {
+    //i18next.changeLanguage('en');
+  }, []);
   return (
     <>
       <div className="BGColor"></div>
@@ -21,9 +28,14 @@ const Download: React.FC = (): JSX.Element => {
         <div className="logoHeader text-center">
           <img src={Logo} alt="" />
         </div>
+{/* <>
+    <button  className="btn btn-primary" onClick={() => i18next.changeLanguage('en')}>En</button>
+    <button className="btn btn-primary" onClick={() => i18next.changeLanguage('es')}>Es</button>
+</> */}
+
         <div className="mobileContent  downloadAppOuter">
           <div className="downloadAppTitle mb-4">Download Picnic App</div>
-
+          dddddddddd------{t('top_bar_title')}
           <p className="simpleText mt-0 mb-4 joinCommunitiesText">
             Join local communities, chat with other members,
             <br /> Get out and be active.

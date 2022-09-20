@@ -27,7 +27,7 @@ import '@formatjs/intl-numberformat/polyfill';
 import '@formatjs/intl-numberformat/locale-data/en'
 import '@formatjs/intl-numberformat/locale-data/en-GB'
 import '@formatjs/intl-numberformat/locale-data/de'
-
+import './language';
 
 function WaitForStateRehydration({ children }: {children: any}) {
   const isRehydrated = useStoreRehydrated();
