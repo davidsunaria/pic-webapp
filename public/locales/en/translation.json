@@ -1,3 +1,9 @@
 {
-  "top_bar_title": "Community Admin Panel ashjdsuyfsdb"
+  "download_picnic_app":"Download Picnic App",
+  "event_hosted_by":"Event hosted by",
+  "group":"Group",
+  "about_event":"About event",
+  "footer": {
+    "group_admin":"Group Admin"
+ }
 }

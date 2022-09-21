@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import CustomSuspense from "../web/components/CustomSuspense";
 
 const Group = React.lazy(() => import("../web/pages/Group"));
@@ -10,7 +10,8 @@ const AppRouter: React.FC = (): JSX.Element => {
   return (
     <Routes>
       <Route
-        path="/event/:id"
+         path={"/event/:id/*"}
+       // path= {`/event/:id/:${lang?lang:null}`}
         element={
           <CustomSuspense>
             <Event />
@@ -18,8 +19,18 @@ const AppRouter: React.FC = (): JSX.Element => {
         }
       />
 
+       {/* <Route
+         path={"/event/:id"}
+       // path= {`/event/:id/:${lang?lang:"en"}`}
+        element={
+          <CustomSuspense>
+            <Event />
+          </CustomSuspense>
+        }
+      /> */}
+
       <Route
-        path="/group/:id"
+        path="/group/:id/*"
         element={
           <CustomSuspense>
             <Group />

@@ -20,6 +20,9 @@ import { useParams } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import Modal from "react-bootstrap/Modal";
 import tzlookup from "tz-lookup";
+import { useTranslation } from 'react-i18next';
+import i18next from "i18next";
+
 
 export const getFormattedAmount = (
   currency: string = "usd",
@@ -43,7 +46,9 @@ export const getFormattedAmount = (
 };
 
 const Event: React.FC = (): JSX.Element => {
-  const { id } = useParams();
+  const { t } = useTranslation();
+  //const { id } = useParams();
+  const {  id, '*': lang } = useParams();
   const { pathname } = useLocation();
   const response = useStoreState((state) => state.detail.eventResponse);
   const getEvent = useStoreActions((action) => action.detail.getEvent);
@@ -62,7 +67,15 @@ const Event: React.FC = (): JSX.Element => {
       url: "common/get-resource-detail",
       payload,
     });
+    if(lang){
+      i18next.changeLanguage(lang);
+    }
+    else{
+      i18next.changeLanguage("en");
+    }
   }, []);
+
+ 
 
   var moment = require("moment-timezone");
 
@@ -534,7 +547,7 @@ const Event: React.FC = (): JSX.Element => {
               <div className="col-sm-6">
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">
-                    Event hosted by
+                   { t("event_hosted_by")}
                   </label>
                   <div>
                     <LazyLoadImage
@@ -566,7 +579,7 @@ const Event: React.FC = (): JSX.Element => {
               </div>
               <div className="col-sm-6">
                 <div className="hostedBy">
-                  <label className="hostedByLabel subtitle">Group</label>
+                  <label className="hostedByLabel subtitle">{t("group")}</label>
                   <div>
                     <LazyLoadImage
                       wrapperClassName={"overideImageCircle"}
@@ -601,7 +614,7 @@ const Event: React.FC = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            <div className="subtitle">About event</div>
+            <div className="subtitle">{t('about_event')}</div>
             <p className="simpleText py-2">
               {response?.details ? response?.details : "N/A"}
             </p>

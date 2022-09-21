@@ -17,10 +17,15 @@ const Download: React.FC = (): JSX.Element => {
       window.location.replace(env?.REACT_APP_ANDROID_URL || "");
     }
   }, [pathname]);
-
   useEffect(() => {
     //i18next.changeLanguage('en');
+   // localStorage.removeItem("i18nextLng");
   }, []);
+
+  
+
+
+
   return (
     <>
       <div className="BGColor"></div>
@@ -32,10 +37,8 @@ const Download: React.FC = (): JSX.Element => {
     <button  className="btn btn-primary" onClick={() => i18next.changeLanguage('en')}>En</button>
     <button className="btn btn-primary" onClick={() => i18next.changeLanguage('es')}>Es</button>
 </> */}
-
         <div className="mobileContent  downloadAppOuter">
-          <div className="downloadAppTitle mb-4">Download Picnic App</div>
-          dddddddddd------{t('top_bar_title')}
+          <div className="downloadAppTitle mb-4">{t('download_picnic_app')}</div>
           <p className="simpleText mt-0 mb-4 joinCommunitiesText">
             Join local communities, chat with other members,
             <br /> Get out and be active.
