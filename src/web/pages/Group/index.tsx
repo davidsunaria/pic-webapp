@@ -54,7 +54,9 @@ const Group: React.FC = (): JSX.Element => {
         <div className="logoHeader">
           <img src={Logo} alt="" />
         </div>
-        <p className="topThankyouText">Download Picnic Groups to participate in the conversation</p>
+        <p className="topThankyouText">
+          Download Picnic Groups to participate in the conversation
+        </p>
         <div className="googleAppButtonsOUter picnicEventDownloadButton">
           <Link to="/group/googleplay">
             <img src={GOOGLEPLAY_IMAGE} alt="" />
@@ -66,39 +68,45 @@ const Group: React.FC = (): JSX.Element => {
         <div className="mobileContent">
           <div className="picnicEventSlider singleImgPreview">
             <div className="carousel-item">
-              <LazyLoadImage
-                wrapperClassName={"overideImageCircle"}
-                effect={response?.image ? "blur" : undefined}
-                style={{
-                  position: "absolute",
-                }}
-                src={
-                  response?.image
-                    ? getImageUrl(response?.image, {
-                        type: "groups",
-                        width: 800,
-                      })
-                    : ""
-                }
-                className="d-block w-100 blurImage"
-                alt="..."
-              />
+              {response?.image ? (
+                <>
+                  <LazyLoadImage
+                    wrapperClassName={"overideImageCircle"}
+                    effect={response?.image ? "blur" : undefined}
+                    style={{
+                      position: "absolute",
+                    }}
+                    src={
+                      response?.image
+                        ? getImageUrl(response?.image, {
+                            type: "groups",
+                            width: 800,
+                          })
+                        : ""
+                    }
+                    className="d-block w-100 blurImage"
+                    alt="..."
+                  />
 
-              <LazyLoadImage
-                wrapperClassName={"overideGroupImageCircle"}
-                placeholderSrc={GROUPDEFAULT_IMAGE}
-                effect={response?.image ? "blur" : undefined}
-                src={
-                  response?.image
-                    ? getImageUrl(response?.image, {
-                        type: "groups",
-                        width: 800,
-                      })
-                    : GROUPDEFAULT_IMAGE
-                }
-                className="d-block w-100"
-                alt="..."
-              />
+                  <LazyLoadImage
+                    wrapperClassName={"overideGroupImageCircle"}
+                    placeholderSrc={GROUPDEFAULT_IMAGE}
+                    effect={response?.image ? "blur" : undefined}
+                    src={
+                      response?.image
+                        ? getImageUrl(response?.image, {
+                            type: "groups",
+                            width: 800,
+                          })
+                        : GROUPDEFAULT_IMAGE
+                    }
+                    className="d-block w-100"
+                    alt="..."
+                  />
+                </>
+              ) : (
+                <img src={GROUPDEFAULT_IMAGE} alt="" />
+              )}
             </div>
           </div>
 
