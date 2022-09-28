@@ -1,0 +1,9 @@
+{
+  "download_picnic_app":"Descarga la aplicación de picnic",
+  "event_hosted_by":"Evento organizado por",
+  "group":"Grupo",
+  "about_event":"Acerca del evento",
+  "footer": {
+    "group_admin":"Administrador del grupo"
+ }
+}

@@ -10,9 +10,13 @@ import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import CATEGORIES_IMAGE from "react-app-images/ic_briefcase.png";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Link, useLocation } from "react-router-dom";
+import { Link ,useLocation} from "react-router-dom";
+import { t } from "i18next";
+import { useTranslation } from 'react-i18next';
+import i18next from "i18next";
 const Group: React.FC = (): JSX.Element => {
-  const { id } = useParams();
+  const { t } = useTranslation();
+  const {  id, '*': lang } = useParams();
   const { pathname } = useLocation();
   const response = useStoreState((state) => state.detail.groupResponse);
   const getGroup = useStoreActions((action) => action.detail.getGroup);
@@ -25,6 +29,12 @@ const Group: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     getGroupDetail({ _id: id });
+    if(lang){
+      i18next.changeLanguage(lang);
+    }
+    else{
+      i18next.changeLanguage("en");
+    }
   }, []);
 
   const getImageUrl = (url: string, options: any) => {
@@ -133,15 +143,15 @@ const Group: React.FC = (): JSX.Element => {
                 </label> */}
               </section>
             </div>
-
+           
             <p className="simpleText mt-0 mb-4">
               {response?.short_description}
             </p>
-
             <div className="row mt-2">
               <div className="col-sm-4">
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">Group Leader</label>
+                  {/* <label className="hostedByLabel subtitle">{t("footer.group_admin")}</label> */}
                   <div>
                     <LazyLoadImage
                       wrapperClassName={"overideImageCircle"}

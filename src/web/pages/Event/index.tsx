@@ -20,9 +20,14 @@ import { useParams } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import Modal from "react-bootstrap/Modal";
 import tzlookup from "tz-lookup";
+import { useTranslation } from 'react-i18next';
+import i18next from "i18next";
 
-export const getFormattedAmount = (currency:string='usd',amount:string|number=0)=>{
- 
+
+export const getFormattedAmount = (
+  currency: string = "usd",
+  amount: string | number = 0
+) => {
   const getLocale = () => {
     switch (currency?.toUpperCase()) {
       case "GBP":
@@ -38,10 +43,12 @@ export const getFormattedAmount = (currency:string='usd',amount:string|number=0)
     currency: currency?.toUpperCase(),
     style: "currency",
   });
-}
+};
 
 const Event: React.FC = (): JSX.Element => {
-  const { id } = useParams();
+  const { t } = useTranslation();
+  //const { id } = useParams();
+  const {  id, '*': lang } = useParams();
   const { pathname } = useLocation();
   const response = useStoreState((state) => state.detail.eventResponse);
   const getEvent = useStoreActions((action) => action.detail.getEvent);
@@ -52,7 +59,6 @@ const Event: React.FC = (): JSX.Element => {
   const [mobileView, setMobileView] = useState<boolean>(true);
 
   //  const [show, setShow] = useState(false);
- // console.log("respnse", response?.location?.coordinates);
   const handleClose = () => setIsVideoPlaying(false);
   const handleShow = () => setIsVideoPlaying(true);
 
@@ -61,17 +67,17 @@ const Event: React.FC = (): JSX.Element => {
       url: "common/get-resource-detail",
       payload,
     });
+    if(lang){
+      i18next.changeLanguage(lang);
+    }
+    else{
+      i18next.changeLanguage("en");
+    }
   }, []);
 
-  // useEffect(() => {
-  //   console.log(
-  //     tzlookup(
-  //       response?.location?.coordinates[1],
-  //       response?.location?.coordinates[0]
-  //     )
-  //   );
-  
-  // }, []);
+ 
+
+  var moment = require("moment-timezone");
 
   useEffect(() => {
     getEventDetail({ _id: id });
@@ -222,16 +228,16 @@ const Event: React.FC = (): JSX.Element => {
     });
 
   const getMinimumValue = (res: any) => {
-    if (!res || Object.keys(res)?.length === 0 || res == undefined ) {
+    if (!res || Object.keys(res)?.length === 0 || res == undefined) {
       return "N/A";
     }
-    let price = (res?.event_fees);
-    let currency = res?.event_currency
+    let price = res?.event_fees;
+    let currency = res?.event_currency;
     if (res?.ticket_type === "multiple") {
-      price = (minValue(res?.ticket_plans)?.amount);
+      price = minValue(res?.ticket_plans)?.amount;
       currency = minValue(res?.ticket_plans)?.currency;
     }
-    return getFormattedAmount(currency,price);
+    return getFormattedAmount(currency, price);
     // if (!res || Object.keys(res)?.length === 0) {
     //   return "N/A";
     // } else {
@@ -262,13 +268,9 @@ const Event: React.FC = (): JSX.Element => {
   const mapOpen = () => {
     window.location.href = `https://www.google.com/maps/search/?api=1&query=${response?.location?.coordinates[1]},%20${response?.location?.coordinates[0]}`;
   };
-
-//   function convertTZ(date:any, tzString:any) {
-//     return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
-// }
-
-// console.log(convertTZ("2012/04/20 10:10:30 +0000", "Asia/Jakarta"))
-
+  const getLocation = (data: any) => {
+    return data;
+  };
   return (
     <>
       <div className="BGColor"></div>
@@ -349,7 +351,8 @@ const Event: React.FC = (): JSX.Element => {
                     {moment(response?.event_start_date_time)
                       .format("LL")
                       .toString() !==
-                    moment(response?.event_end_date_time).format("LL") ? (
+                      moment(response?.event_end_date_time).format("LL") &&
+                    response?.is_multi_day_event ? (
                       <p className="eventInfoP">Start Date </p>
                     ) : (
                       ""
@@ -359,19 +362,19 @@ const Event: React.FC = (): JSX.Element => {
                         {" "}
                         <label className="eventInfoLabel">
                           {response?.event_start_date_time
-                            ? moment(response?.event_start_date_time).format(
-                                "LL"
-                              )
+                            ? moment(response?.event_start_date_time)
+                                .tz(
+                                  getLocation(
+                                    response?.event_timezone ||
+                                      tzlookup(
+                                        response?.location?.coordinates[1],
+                                        response?.location?.coordinates[0]
+                                      )
+                                  )
+                                )
+                                .format("MMMM Do YYYY h:mm a z")
                             : "N/A"}
                         </label>{" "}
-                        |&nbsp;
-                        <label className="eventInfoLabel">
-                          {response?.event_end_date_time
-                            ? moment(response?.event_start_date_time).format(
-                                "LT"
-                              )
-                            : "N/A"}
-                        </label>
                       </>
                     ) : (
                       <label className="eventInfoLabel">
@@ -395,12 +398,33 @@ const Event: React.FC = (): JSX.Element => {
                     <div className="eventInfoLabelOuter">
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
-                          ? moment(response?.event_start_date_time).format("LT")
+                          ? //moment(response?.event_start_date_time).format("LT")
+                         <>  {moment(response?.event_start_date_time)
+                              .tz(
+                                getLocation(
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
+                                )
+                              )
+                              .format("h:mm A")+ " to " + moment(response?.event_end_date_time)
+                              .tz(
+                                getLocation(
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
+                                )
+                              )
+                              .format("h:mm A z")}</> 
                           : "N/A"}
                       </label>
                     </div>
                   </div>
-                ) : (
+                ) : response?.is_multi_day_event ? (
                   <div className="eventInfo">
                     <i>
                       <img src={Calender} alt="..." />
@@ -409,13 +433,45 @@ const Event: React.FC = (): JSX.Element => {
                       <p className="eventInfoP">End Date </p>
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
-                          ? moment(response?.event_end_date_time).format("LL")
+                          ? moment(response?.event_end_date_time)
+                              .tz(
+                                getLocation(
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
+                                )
+                              )
+                              .format("MMMM Do YYYY h:mm a z")
                           : "N/A"}
                       </label>{" "}
-                      |&nbsp;
+                    </div>
+                  </div>
+                ) : (
+                  <div className="eventInfo">
+                    <i>
+                      <img src={Clock} alt="..." />
+                    </i>
+                    <div className="eventInfoLabelOuter">
+                      {/* <p className="eventInfoP">End Date </p> */}
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
-                          ? moment(response?.event_end_date_time).format("LT")
+                          ? moment(response?.event_start_date_time)
+                              .tz(
+                                // tzlookup(
+                                //   response?.location?.coordinates[1],
+                                //   response?.location?.coordinates[0]
+                                // )
+                                getLocation(
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
+                                )
+                              )
+                              .format("h:mm a z") 
                           : "N/A"}
                       </label>
                     </div>
@@ -488,7 +544,7 @@ const Event: React.FC = (): JSX.Element => {
                             )?.toFixed(2)}`}
                       </span> */}
                       <span>
-                        {getFormattedAmount(val?.currency,val?.amount)}
+                        {getFormattedAmount(val?.currency, val?.amount)}
                       </span>
                     </div>
                   );
@@ -502,7 +558,7 @@ const Event: React.FC = (): JSX.Element => {
               <div className="col-sm-6">
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">
-                    Event hosted by
+                   { t("event_hosted_by")}
                   </label>
                   <div>
                     <LazyLoadImage
@@ -534,7 +590,7 @@ const Event: React.FC = (): JSX.Element => {
               </div>
               <div className="col-sm-6">
                 <div className="hostedBy">
-                  <label className="hostedByLabel subtitle">Group</label>
+                  <label className="hostedByLabel subtitle">{t("group")}</label>
                   <div>
                     <LazyLoadImage
                       wrapperClassName={"overideImageCircle"}
@@ -570,6 +626,8 @@ const Event: React.FC = (): JSX.Element => {
               </div>
             </div>
             {/* <div className="subtitle">About event</div>
+            // <div className="subtitle">{t('about_event')}</div>
+
             <p className="simpleText py-2">
               {response?.details ? response?.details : "N/A"}
             </p> */}
