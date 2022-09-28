@@ -1,8 +1,16 @@
 {
   "download_picnic_app":"Descarga la aplicación de picnic",
+  "free":"Gratis",
   "event_hosted_by":"Evento organizado por",
   "group":"Grupo",
+  "event":"Evento",
+  "start_date":"Fecha de inicio",
+  "end_date":"Fecha de finalización",
   "about_event":"Acerca del evento",
+  "per_person": "Por persona",
+   "leader":"Líder",
+   "tickets_available":" Tickets disponibles",
+   "unlimited_entry":"Entrada ilimitada",
   "footer": {
     "group_admin":"Administrador del grupo"
  }

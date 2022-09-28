@@ -274,9 +274,6 @@ const Event: React.FC = (): JSX.Element => {
   return (
     <>
       <div className="BGColor"></div>
-
-    
-
       <Modal show={isVideoPlaying} className="videoModal" onHide={handleClose}>
         <img
           src={CLOSEVIDEO_IMAGE}
@@ -305,10 +302,35 @@ const Event: React.FC = (): JSX.Element => {
             <img src={APPSTORE_IMAGE} alt="" />
           </Link>
         </div>
+        {console.log("hiii",response?.image)}
+        {console.log("carouselItemData?.length",carouselItemData?.length)}
         <div className="mobileContent picnicEventSlider">
-          {carouselItemData?.length > 0 && (
-            <Carousel interval={3000}>{carouselItemData}</Carousel>
+          {carouselItemData?.length > 1 && (
+            <Carousel interval={3000} >{carouselItemData}</Carousel>
           )}
+           {(carouselItemData?.length===1)&& (
+                   <LazyLoadImage
+                  wrapperClassName={"overideImageCircle"}
+                  effect={response?.image ? "blur" : undefined}
+                  style={{
+                    position: "absolute",
+                  }}
+                  src={
+                   (response?.image
+                    ? getImageUrl(response?.image, {
+                        type: "events",
+                        width: 800,
+                      })
+                    : response?.event_images[0]?.name?getImageUrl(response?.event_images[0]?.name, {
+                      type: "events",
+                      width: 800,
+                    }):DEFAULT_IMAGE) 
+                  }
+                  className="d-block w-100 "
+                  alt="..."
+                />
+          )}
+        
           {!carouselItemData?.length && (
             <div className="defaultImgOuter">
               <img src={DEFAULT_IMAGE} alt="Logo" />
@@ -326,14 +348,14 @@ const Event: React.FC = (): JSX.Element => {
               </section>
               <section className="eventSection">
                 {response?.is_free_event === 1 ? (
-                  <span className="eventSectionSpan"> Free</span>
+                  <span className="eventSectionSpan"> {t('free')}</span>
                 ) : (
                   <>
                     <span className="eventSectionSpan">
                       {getMinimumValue(response)}
                     </span>
                     <label className="eventSectionLabel eventPrice">
-                      Per person
+                      {t('per_person')}
                     </label>
                   </>
                 )}
@@ -353,7 +375,7 @@ const Event: React.FC = (): JSX.Element => {
                       .toString() !==
                       moment(response?.event_end_date_time).format("LL") &&
                     response?.is_multi_day_event ? (
-                      <p className="eventInfoP">Start Date </p>
+                      <p className="eventInfoP">{t('start_date')} </p>
                     ) : (
                       ""
                     )}
@@ -409,17 +431,20 @@ const Event: React.FC = (): JSX.Element => {
                                     )
                                 )
                               )
-                              .format("h:mm A")+ " to " + moment(response?.event_end_date_time)
-                              .tz(
-                                getLocation(
-                                  response?.event_timezone ||
-                                    tzlookup(
-                                      response?.location?.coordinates[1],
-                                      response?.location?.coordinates[0]
-                                    )
-                                )
-                              )
-                              .format("h:mm A z")}</> 
+                              .format("h:mm A z")
+                              // + " to " + moment(response?.event_end_date_time)
+                              // .tz(
+                              //   getLocation(
+                              //     response?.event_timezone ||
+                              //       tzlookup(
+                              //         response?.location?.coordinates[1],
+                              //         response?.location?.coordinates[0]
+                              //       )
+                              //   )
+                              // )
+                              // .format("h:mm A z")
+                              }
+                              </> 
                           : "N/A"}
                       </label>
                     </div>
@@ -430,7 +455,7 @@ const Event: React.FC = (): JSX.Element => {
                       <img src={Calender} alt="..." />
                     </i>
                     <div className="eventInfoLabelOuter">
-                      <p className="eventInfoP">End Date </p>
+                      <p className="eventInfoP">{t('end_date')} </p>
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
                           ? moment(response?.event_end_date_time)
@@ -508,9 +533,9 @@ const Event: React.FC = (): JSX.Element => {
                       {response?.capacity_type === "limited"
                         ? `${
                             response?.capacity - response?.total_sold_tickets
-                          } Tickets Available`
+                            +t("tickets_available") }`
                         : response?.capacity_type === "unlimited"
-                        ? "Unlimited"
+                        ? t("unlimited_entry")
                         : "N/A"}
                     </label>
                   </div>
@@ -625,12 +650,12 @@ const Event: React.FC = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            {/* <div className="subtitle">About event</div>
-            // <div className="subtitle">{t('about_event')}</div>
+             {/* <div className="subtitle">About event</div>
+             <div className="subtitle">{t('about_event')}</div> */}
 
             <p className="simpleText py-2">
-              {response?.details ? response?.details : "N/A"}
-            </p> */}
+              {response?.details ? response?.details : ""}
+            </p> 
           </div>
         </div>
        

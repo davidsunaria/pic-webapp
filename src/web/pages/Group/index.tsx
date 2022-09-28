@@ -150,7 +150,7 @@ const Group: React.FC = (): JSX.Element => {
             <div className="row mt-2">
               <div className="col-sm-4">
                 <div className="hostedBy">
-                  <label className="hostedByLabel subtitle">Group Leader</label>
+                  <label className="hostedByLabel subtitle">{t("leader")}</label>
                   {/* <label className="hostedByLabel subtitle">{t("footer.group_admin")}</label> */}
                   <div>
                     <LazyLoadImage
