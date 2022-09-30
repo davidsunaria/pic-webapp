@@ -5,6 +5,9 @@ $text-color:#4B4B5A;
 
 
 @media(max-width:767px){
+	.headerWrapper{
+		display: block;
+	}
 	.topThankyouText{
 		font-size: 15px;
 	}
@@ -24,7 +27,7 @@ $text-color:#4B4B5A;
 		}
 	}
 	.googleAppButtonsOUter{
-		margin-top: 28px;
+		margin-top: 0px;
 	}
 	.downloadAppOuter{
 		padding: 50px 15px;

@@ -20,9 +20,8 @@ import { useParams } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import Modal from "react-bootstrap/Modal";
 import tzlookup from "tz-lookup";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import i18next from "i18next";
-
 
 export const getFormattedAmount = (
   currency: string = "usd",
@@ -48,7 +47,7 @@ export const getFormattedAmount = (
 const Event: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   //const { id } = useParams();
-  const {  id, '*': lang } = useParams();
+  const { id, "*": lang } = useParams();
   const { pathname } = useLocation();
   const response = useStoreState((state) => state.detail.eventResponse);
   const getEvent = useStoreActions((action) => action.detail.getEvent);
@@ -67,15 +66,12 @@ const Event: React.FC = (): JSX.Element => {
       url: "common/get-resource-detail",
       payload,
     });
-    if(lang){
+    if (lang) {
       i18next.changeLanguage(lang);
-    }
-    else{
+    } else {
       i18next.changeLanguage("en");
     }
   }, []);
-
- 
 
   var moment = require("moment-timezone");
 
@@ -290,47 +286,36 @@ const Event: React.FC = (): JSX.Element => {
       </Modal>
 
       <div className="mobileDetailWrapper">
-        <div className="logoHeader">
-          <img src={Logo} alt="..." />
+        <div className="headerWrapper">
+          <div className="logoHeader">
+            <img src={Logo} alt="..." />
+          </div>
+          <div className="googleAppButtonsOUter picnicEventDownloadButton">
+            <Link to="/event/googleplay">
+              <img src={GOOGLEPLAY_IMAGE} alt="" />
+            </Link>
+            <Link to="/event/appstore">
+              <img src={APPSTORE_IMAGE} alt="" />
+            </Link>
+          </div>
         </div>
-        <p className="topThankyouText">To register for this event, download Picnic Groups and register in the app. Unlock the out & about today.</p>
-        <div className="googleAppButtonsOUter picnicEventDownloadButton">
-          <Link to="/event/googleplay">
-            <img src={GOOGLEPLAY_IMAGE} alt="" />
-          </Link>
-          <Link to="/event/appstore">
-            <img src={APPSTORE_IMAGE} alt="" />
-          </Link>
-        </div>
-        {console.log("hiii",response?.image)}
-        {console.log("carouselItemData?.length",carouselItemData?.length)}
+        <p className="topThankyouText mb-4">{t("header_content_event")}</p>
+
         <div className="mobileContent picnicEventSlider">
           {carouselItemData?.length > 1 && (
-            <Carousel interval={3000} >{carouselItemData}</Carousel>
+            <Carousel interval={3000}>{carouselItemData}</Carousel>
           )}
-           {(carouselItemData?.length===1)&& (
-                   <LazyLoadImage
-                  wrapperClassName={"overideImageCircle"}
-                  effect={response?.image ? "blur" : undefined}
-                  style={{
-                    position: "absolute",
-                  }}
-                  src={
-                   (response?.image
-                    ? getImageUrl(response?.image, {
-                        type: "events",
-                        width: 800,
-                      })
-                    : response?.event_images[0]?.name?getImageUrl(response?.event_images[0]?.name, {
-                      type: "events",
-                      width: 800,
-                    }):DEFAULT_IMAGE) 
-                  }
-                  className="d-block w-100 "
-                  alt="..."
-                />
+          {carouselItemData?.length === 1 && (
+            <Carousel
+              interval={3000}
+              indicators={false}
+              nextIcon={false}
+              prevIcon={false}
+            >
+              {carouselItemData}
+            </Carousel>
           )}
-        
+
           {!carouselItemData?.length && (
             <div className="defaultImgOuter">
               <img src={DEFAULT_IMAGE} alt="Logo" />
@@ -348,14 +333,14 @@ const Event: React.FC = (): JSX.Element => {
               </section>
               <section className="eventSection">
                 {response?.is_free_event === 1 ? (
-                  <span className="eventSectionSpan"> {t('free')}</span>
+                  <span className="eventSectionSpan"> {t("free")}</span>
                 ) : (
                   <>
                     <span className="eventSectionSpan">
                       {getMinimumValue(response)}
                     </span>
                     <label className="eventSectionLabel eventPrice">
-                      {t('per_person')}
+                      {t("per_person")}
                     </label>
                   </>
                 )}
@@ -375,7 +360,7 @@ const Event: React.FC = (): JSX.Element => {
                       .toString() !==
                       moment(response?.event_end_date_time).format("LL") &&
                     response?.is_multi_day_event ? (
-                      <p className="eventInfoP">{t('start_date')} </p>
+                      <p className="eventInfoP">{t("start_date")} </p>
                     ) : (
                       ""
                     )}
@@ -386,13 +371,11 @@ const Event: React.FC = (): JSX.Element => {
                           {response?.event_start_date_time
                             ? moment(response?.event_start_date_time)
                                 .tz(
-                                  getLocation(
-                                    response?.event_timezone ||
-                                      tzlookup(
-                                        response?.location?.coordinates[1],
-                                        response?.location?.coordinates[0]
-                                      )
-                                  )
+                                  response?.event_timezone ||
+                                    tzlookup(
+                                      response?.location?.coordinates[1],
+                                      response?.location?.coordinates[0]
+                                    )
                                 )
                                 .format("MMMM Do YYYY h:mm a z")
                             : "N/A"}
@@ -419,19 +402,22 @@ const Event: React.FC = (): JSX.Element => {
                     </i>
                     <div className="eventInfoLabelOuter">
                       <label className="eventInfoLabel">
-                        {response?.event_end_date_time
-                          ? //moment(response?.event_start_date_time).format("LT")
-                         <>  {moment(response?.event_start_date_time)
-                              .tz(
-                                getLocation(
-                                  response?.event_timezone ||
-                                    tzlookup(
-                                      response?.location?.coordinates[1],
-                                      response?.location?.coordinates[0]
-                                    )
+                        {response?.event_end_date_time ? (
+                          //moment(response?.event_start_date_time).format("LT")
+                          <>
+                            {" "}
+                            {
+                              moment(response?.event_start_date_time)
+                                .tz(
+                                  getLocation(
+                                    response?.event_timezone ||
+                                      tzlookup(
+                                        response?.location?.coordinates[1],
+                                        response?.location?.coordinates[0]
+                                      )
+                                  )
                                 )
-                              )
-                              .format("h:mm A z")
+                                .format("h:mm A z")
                               // + " to " + moment(response?.event_end_date_time)
                               // .tz(
                               //   getLocation(
@@ -443,9 +429,11 @@ const Event: React.FC = (): JSX.Element => {
                               //   )
                               // )
                               // .format("h:mm A z")
-                              }
-                              </> 
-                          : "N/A"}
+                            }
+                          </>
+                        ) : (
+                          "N/A"
+                        )}
                       </label>
                     </div>
                   </div>
@@ -455,7 +443,7 @@ const Event: React.FC = (): JSX.Element => {
                       <img src={Calender} alt="..." />
                     </i>
                     <div className="eventInfoLabelOuter">
-                      <p className="eventInfoP">{t('end_date')} </p>
+                      <p className="eventInfoP">{t("end_date")} </p>
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
                           ? moment(response?.event_end_date_time)
@@ -496,7 +484,7 @@ const Event: React.FC = (): JSX.Element => {
                                     )
                                 )
                               )
-                              .format("h:mm a z") 
+                              .format("h:mm a z")
                           : "N/A"}
                       </label>
                     </div>
@@ -532,8 +520,10 @@ const Event: React.FC = (): JSX.Element => {
                     <label className="eventInfoLabel">
                       {response?.capacity_type === "limited"
                         ? `${
-                            response?.capacity - response?.total_sold_tickets
-                            +t("tickets_available") }`
+                            response?.capacity -
+                            response?.total_sold_tickets +
+                            t("tickets_available")
+                          }`
                         : response?.capacity_type === "unlimited"
                         ? t("unlimited_entry")
                         : "N/A"}
@@ -583,7 +573,7 @@ const Event: React.FC = (): JSX.Element => {
               <div className="col-sm-6">
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">
-                   { t("event_hosted_by")}
+                    {t("event_hosted_by")}
                   </label>
                   <div>
                     <LazyLoadImage
@@ -650,15 +640,14 @@ const Event: React.FC = (): JSX.Element => {
                 </div>
               </div>
             </div>
-             {/* <div className="subtitle">About event</div>
+            {/* <div className="subtitle">About event</div>
              <div className="subtitle">{t('about_event')}</div> */}
 
             <p className="simpleText py-2">
               {response?.details ? response?.details : ""}
-            </p> 
+            </p>
           </div>
         </div>
-       
       </div>
     </>
   );

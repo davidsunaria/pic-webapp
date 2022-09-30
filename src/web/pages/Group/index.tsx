@@ -61,20 +61,24 @@ const Group: React.FC = (): JSX.Element => {
     <>
       <div className="BGColor"></div>
       <div className="mobileDetailWrapper">
-        <div className="logoHeader">
-          <img src={Logo} alt="" />
+        <div className="headerWrapper">
+          <div className="logoHeader">
+            <img src={Logo} alt="" />
+          </div>
+          <div className="googleAppButtonsOUter picnicEventDownloadButton">
+            <Link to="/group/googleplay">
+              <img src={GOOGLEPLAY_IMAGE} alt="" />
+            </Link>
+            <Link to="/group/appstore">
+              <img src={APPSTORE_IMAGE} alt="" />
+            </Link>
+          </div>
         </div>
-        <p className="topThankyouText">
-          Download Picnic Groups to participate in the conversation
+
+        <p className="topThankyouText mb-4">
+        {t("header_content_group")}
         </p>
-        <div className="googleAppButtonsOUter picnicEventDownloadButton">
-          <Link to="/group/googleplay">
-            <img src={GOOGLEPLAY_IMAGE} alt="" />
-          </Link>
-          <Link to="/group/appstore">
-            <img src={APPSTORE_IMAGE} alt="" />
-          </Link>
-        </div>
+        
         <div className="mobileContent">
           <div className="picnicEventSlider singleImgPreview">
             <div className="carousel-item">
