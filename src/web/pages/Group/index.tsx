@@ -57,6 +57,19 @@ const Group: React.FC = (): JSX.Element => {
       window.location.replace(env?.REACT_APP_ANDROID_URL || "");
     }
   }, [pathname]);
+
+  const groupCategory = (data:string) =>{
+    if(data==="professional"){
+      return t("professional")
+    }
+    else if(data==="personal"){
+      return t("personal")
+    }
+    else if(data==="charitable"){
+      return t("charitable")
+    }
+
+  }
   return (
     <>
       <div className="BGColor"></div>
@@ -140,7 +153,7 @@ const Group: React.FC = (): JSX.Element => {
                     className="me-2 img-fluid"
                     alt=""
                   />
-                  {response?.category || "N/A"}
+                  {groupCategory(response?.category) || "N/A"}
                 </div>
                 {/* <label className="eventSectionLabel eventPrice">
                   FM frequency: {response?.radio_frequency || "N/A"}

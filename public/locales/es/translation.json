@@ -13,6 +13,10 @@
    "leader":"Líder",
    "tickets_available":" Tickets disponibles",
    "unlimited_entry":"Entrada ilimitada",
+   "donation_accepted": "Se aceptan donaciones",
+   "personal": "Personal",
+   "charitable": "Caritativo",
+   "professional": "Profesional",
   "footer": {
     "group_admin":"Administrador del grupo"
  }

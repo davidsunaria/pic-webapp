@@ -344,6 +344,9 @@ const Event: React.FC = (): JSX.Element => {
                     </label>
                   </>
                 )}
+                 <label className="eventSectionLabel">
+                  {response?.is_donation_enabled ? t("donation_accepted") : ""}
+                </label> 
               </section>
             </div>
 

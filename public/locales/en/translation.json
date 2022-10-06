@@ -13,6 +13,10 @@
   "per_person": "Per person",
   "about_event":"About event",
   "unlimited_entry":"Unlimited Entry",
+ "donation_accepted": "Donations accepted",
+ "personal": "Personal",
+ "charitable": "Charitable",
+ "professional": "Professional",
   "footer": {
     "group_admin":"Group Admin"
  }
