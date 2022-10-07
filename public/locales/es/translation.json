@@ -17,6 +17,9 @@
    "personal": "Personal",
    "charitable": "Caritativo",
    "professional": "Profesional",
+   "download_component":{
+    "content":"Únase a comunidades locales, chatee con otros miembros, Sal y mantente activo."
+   },
   "footer": {
     "group_admin":"Administrador del grupo"
  }

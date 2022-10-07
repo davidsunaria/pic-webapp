@@ -10,6 +10,8 @@ import MOBILE_IMAGE from "react-app-images/mobile-default.png";
 import PLAY_IMAGE from "react-app-images/play.png";
 import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
 import APPSTORE_IMAGE from "react-app-images/App-Store.png";
+import GOOGLEPLAY_ES_IMAGE from "react-app-images/Google-play-es.png";
+import APPSTORE_ES_IMAGE from "react-app-images/App-store-es.png";
 import CLOSEVIDEO_IMAGE from "react-app-images/cross-video.png";
 import { useStoreActions, useStoreState } from "react-app-store";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -292,10 +294,10 @@ const Event: React.FC = (): JSX.Element => {
           </div>
           <div className="googleAppButtonsOUter picnicEventDownloadButton">
             <Link to="/event/googleplay">
-              <img src={GOOGLEPLAY_IMAGE} alt="" />
+              <img src={lang==="en"||lang==="" ?GOOGLEPLAY_IMAGE:GOOGLEPLAY_ES_IMAGE} alt="" />
             </Link>
             <Link to="/event/appstore">
-              <img src={APPSTORE_IMAGE} alt="" />
+              <img src={lang==="en"||lang===""?APPSTORE_IMAGE: APPSTORE_ES_IMAGE} alt="" />
             </Link>
           </div>
         </div>

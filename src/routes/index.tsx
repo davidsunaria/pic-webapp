@@ -9,6 +9,16 @@ const Download = React.lazy(() => import("../web/pages/Download"));
 const AppRouter: React.FC = (): JSX.Element => {
   return (
     <Routes>
+
+<Route
+        path="/*"
+        element={
+          <CustomSuspense>
+            <Download />
+          </CustomSuspense>
+        }
+      />
+
       <Route
          path={"/event/:id/*"}
        // path= {`/event/:id/:${lang?lang:null}`}
@@ -38,7 +48,7 @@ const AppRouter: React.FC = (): JSX.Element => {
         }
       />
       <Route
-        path="/download"
+        path="/download/*"
         element={
           <CustomSuspense>
             <Download />
@@ -53,14 +63,7 @@ const AppRouter: React.FC = (): JSX.Element => {
       <Route path="/download/appstore" element={<Download />} />
       {/* <Route path="/appstore/:id" element={<RedirectPage />} />
       <Route path="/googleplay/:id" element={<RedirectPage />} /> */}
-      <Route
-        path="/"
-        element={
-          <CustomSuspense>
-            <Download />
-          </CustomSuspense>
-        }
-      />
+      
     </Routes>
   );
 };

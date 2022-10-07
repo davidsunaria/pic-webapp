@@ -17,6 +17,9 @@
  "personal": "Personal",
  "charitable": "Charitable",
  "professional": "Professional",
+ "download_component":{
+  "content":"Join local communities, chat with other members,  Get out and be active."
+ },
   "footer": {
     "group_admin":"Group Admin"
  }
