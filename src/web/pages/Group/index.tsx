@@ -6,16 +6,13 @@ import env from "../../../config";
 import { useParams } from "react-router-dom";
 import DEFAULT_IMAGE from "react-app-images/default.png";
 import GROUPDEFAULT_IMAGE from "react-app-images/Group-default.png";
-import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
-import APPSTORE_IMAGE from "react-app-images/App-Store.png";
-import GOOGLEPLAY_ES_IMAGE from "react-app-images/Google-play-es.png";
-import APPSTORE_ES_IMAGE from "react-app-images/App-store-es.png";
 import CATEGORIES_IMAGE from "react-app-images/ic_briefcase.png";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link ,useLocation} from "react-router-dom";
 import { t } from "i18next";
 import { useTranslation } from 'react-i18next';
 import i18next from "i18next";
+import DownLoadButton from "src/web/components/DownLoadButton";
 const Group: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   const {  id, '*': lang } = useParams();
@@ -62,13 +59,13 @@ const Group: React.FC = (): JSX.Element => {
 
   const groupCategory = (data:string) =>{
     if(data==="professional"){
-      return t("professional")
+      return t("group_component.category.professional")
     }
     else if(data==="personal"){
-      return t("personal")
+      return t("group_component.category.personal")
     }
     else if(data==="charitable"){
-      return t("charitable")
+      return t("group_component.category.charitable")
     }
 
   }
@@ -82,16 +79,16 @@ const Group: React.FC = (): JSX.Element => {
           </div>
           <div className="googleAppButtonsOUter picnicEventDownloadButton">
             <Link to="/group/googleplay">
-            <img src={lang==="en"||lang==="" ?GOOGLEPLAY_IMAGE:GOOGLEPLAY_ES_IMAGE} alt="" />
+            <DownLoadButton buttonType="googlePlay" lang={lang ? lang : ""} />
             </Link>
             <Link to="/group/appstore">
-            <img src={lang==="en"||lang===""?APPSTORE_IMAGE: APPSTORE_ES_IMAGE} alt="" />
+            <DownLoadButton buttonType="appStore" lang={lang ? lang : ""} />
             </Link>
           </div>
         </div>
 
         <p className="topThankyouText mb-4">
-        {t("header_content_group")}
+        {t("group_component.header.content")}
         </p>
         
         <div className="mobileContent">
@@ -169,7 +166,7 @@ const Group: React.FC = (): JSX.Element => {
             <div className="row mt-2">
               <div className="col-sm-4">
                 <div className="hostedBy">
-                  <label className="hostedByLabel subtitle">{t("leader")}</label>
+                  <label className="hostedByLabel subtitle">{t("group_component.footer.leader")}</label>
                   {/* <label className="hostedByLabel subtitle">{t("footer.group_admin")}</label> */}
                   <div>
                     <LazyLoadImage

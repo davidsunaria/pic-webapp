@@ -1,27 +1,43 @@
 {
-  "download_picnic_app":"Download Picnic App",
-  "free":"Free",
-  "header_content_event":"To register for this event, download Picnic Groups and register in the app. Unlock the out & about today.",
-  "header_content_group":"Download Picnic Groups to participate in the conversation",
-  "event_hosted_by":"Event hosted by",
-  "group":"Group",
-  "event":"Event",
-  "start_date":"Start Date",
-  "end_date":"End Date",
-  "leader":"Leader",
-  "tickets_available":" Tickets Available",
-  "per_person": "Per person",
-  "about_event":"About event",
-  "unlimited_entry":"Unlimited Entry",
- "donation_accepted": "Donations accepted",
- "personal": "Personal",
- "charitable": "Charitable",
- "professional": "Professional",
- "ticket_plans":"Ticket Plans",
- "download_component":{
-  "content":"Join local communities, chat with other members,  Get out and be active."
- },
+  "download_picnic_app": "Download Picnic App",
+  "group": "Group",
+  "event": "Event",
+  "about_event": "About event",
+  "event_component": {
+    "header": {
+      "content": "To register for this event, download Picnic Groups and register in the app. Unlock the out & about today."
+    },
+    "body": {
+      "free": "Free",
+      "ticket_plans": "Ticket Plans",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "per_person": "Per person",
+      "unlimited_entry": "Unlimited Entry",
+      "tickets_available": " Tickets Available",
+      "donation_accepted": "Donations accepted"
+    },
+    "footer": {
+      "event_hosted_by": "Event hosted by"
+    }
+  },
+  "group_component": {
+    "header": {
+      "content": "Download Picnic Groups to participate in the conversation"
+    },
+    "category": {
+      "personal": "Personal",
+      "charitable": "Charitable",
+      "professional": "Professional"
+    },
+    "footer": {
+      "leader": "Leader"
+    }
+  },
+  "download_component": {
+    "content": "Join local communities, chat with other members,  Get out and be active."
+  },
   "footer": {
-    "group_admin":"Group Admin"
- }
+    "group_admin": "Group Admin"
+  }
 }

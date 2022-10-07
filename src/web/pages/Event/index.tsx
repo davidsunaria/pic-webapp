@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Logo from "react-app-images/logo.png";
 import Calender from "react-app-images/calendar.png";
 import Location from "react-app-images/location.png";
@@ -8,14 +8,9 @@ import User from "react-app-images/user.png";
 import DEFAULT_IMAGE from "react-app-images/default.png";
 import MOBILE_IMAGE from "react-app-images/mobile-default.png";
 import PLAY_IMAGE from "react-app-images/play.png";
-import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
-import APPSTORE_IMAGE from "react-app-images/App-Store.png";
-import GOOGLEPLAY_ES_IMAGE from "react-app-images/Google-play-es.png";
-import APPSTORE_ES_IMAGE from "react-app-images/App-store-es.png";
 import CLOSEVIDEO_IMAGE from "react-app-images/cross-video.png";
 import { useStoreActions, useStoreState } from "react-app-store";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import moment from "moment";
 import { Link, useLocation } from "react-router-dom";
 import env from "../../../config";
 import { useParams } from "react-router-dom";
@@ -24,6 +19,7 @@ import Modal from "react-bootstrap/Modal";
 import tzlookup from "tz-lookup";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
+import DownLoadButton from "src/web/components/DownLoadButton";
 
 export const getFormattedAmount = (
   currency: string = "usd",
@@ -61,7 +57,6 @@ const Event: React.FC = (): JSX.Element => {
 
   //  const [show, setShow] = useState(false);
   const handleClose = () => setIsVideoPlaying(false);
-  const handleShow = () => setIsVideoPlaying(true);
 
   const getEventDetail = useCallback(async (payload) => {
     await getEvent({
@@ -294,14 +289,14 @@ const Event: React.FC = (): JSX.Element => {
           </div>
           <div className="googleAppButtonsOUter picnicEventDownloadButton">
             <Link to="/event/googleplay">
-              <img src={lang==="en"||lang==="" ?GOOGLEPLAY_IMAGE:GOOGLEPLAY_ES_IMAGE} alt="" />
+              <DownLoadButton buttonType="googlePlay" lang={lang ? lang : ""} />
             </Link>
             <Link to="/event/appstore">
-              <img src={lang==="en"||lang===""?APPSTORE_IMAGE: APPSTORE_ES_IMAGE} alt="" />
+              <DownLoadButton buttonType="appStore" lang={lang ? lang : ""} />
             </Link>
           </div>
         </div>
-        <p className="topThankyouText mb-4">{t("header_content_event")}</p>
+        <p className="topThankyouText mb-4">{t("event_component.header.content")}</p>
 
         <div className="mobileContent picnicEventSlider">
           {carouselItemData?.length > 1 && (
@@ -335,20 +330,20 @@ const Event: React.FC = (): JSX.Element => {
               </section>
               <section className="eventSection">
                 {response?.is_free_event === 1 ? (
-                  <span className="eventSectionSpan"> {t("free")}</span>
+                  <span className="eventSectionSpan"> {t("event_component.body.free")}</span>
                 ) : (
                   <>
                     <span className="eventSectionSpan">
                       {getMinimumValue(response)}
                     </span>
                     <label className="eventSectionLabel eventPrice">
-                      {t("per_person")}
+                      {t("event_component.body.per_person")}
                     </label>
                   </>
                 )}
-                 <label className="eventSectionLabel">
-                  {response?.is_donation_enabled ? t("donation_accepted") : ""}
-                </label> 
+                <label className="eventSectionLabel">
+                  {response?.is_donation_enabled ? t("event_component.body.donation_accepted") : ""}
+                </label>
               </section>
             </div>
 
@@ -365,7 +360,7 @@ const Event: React.FC = (): JSX.Element => {
                       .toString() !==
                       moment(response?.event_end_date_time).format("LL") &&
                     response?.is_multi_day_event ? (
-                      <p className="eventInfoP">{t("start_date")} </p>
+                      <p className="eventInfoP">{t("event_component.body.start_date")} </p>
                     ) : (
                       ""
                     )}
@@ -448,7 +443,7 @@ const Event: React.FC = (): JSX.Element => {
                       <img src={Calender} alt="..." />
                     </i>
                     <div className="eventInfoLabelOuter">
-                      <p className="eventInfoP">{t("end_date")} </p>
+                      <p className="eventInfoP">{t("event_component.body.end_date")} </p>
                       <label className="eventInfoLabel">
                         {response?.event_end_date_time
                           ? moment(response?.event_end_date_time)
@@ -527,10 +522,10 @@ const Event: React.FC = (): JSX.Element => {
                         ? `${
                             response?.capacity -
                             response?.total_sold_tickets +
-                            t("tickets_available")
+                            t("event_component.body.tickets_available")
                           }`
                         : response?.capacity_type === "unlimited"
-                        ? t("unlimited_entry")
+                        ? t("event_component.body.unlimited_entry")
                         : "N/A"}
                     </label>
                   </div>
@@ -544,7 +539,7 @@ const Event: React.FC = (): JSX.Element => {
             {response &&
             response?.is_free_event === 0 &&
             response?.ticket_plans?.length ? (
-              <div className="subtitle">{t('ticket_plans')}</div>
+              <div className="subtitle">{t("event_component.body.ticket_plans")}</div>
             ) : (
               <></>
             )}
@@ -578,7 +573,7 @@ const Event: React.FC = (): JSX.Element => {
               <div className="col-sm-6">
                 <div className="hostedBy">
                   <label className="hostedByLabel subtitle">
-                    {t("event_hosted_by")}
+                    {t("event_component.footer.event_hosted_by")}
                   </label>
                   <div>
                     <LazyLoadImage

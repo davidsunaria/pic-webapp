@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
 import Logo from "react-app-images/logo.png";
-import GOOGLEPLAY_IMAGE from "react-app-images/Google-Play.png";
-import APPSTORE_IMAGE from "react-app-images/App-Store.png";
 import { Link, useLocation, useParams } from "react-router-dom";
 import env from "../../../config";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
-import APPSTORE_ES_IMAGE from "react-app-images/App-store-es.png";
-import GOOGLEPLAY_ES_IMAGE from "react-app-images/Google-play-es.png";
+import DownLoadButton from "src/web/components/DownLoadButton";
 
 const Download: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
@@ -55,24 +52,10 @@ const Download: React.FC = (): JSX.Element => {
 
           <div className="googleAppButtonsOUter">
             <Link to="/download/googleplay">
-              <img
-                src={
-                  lang === "en" || lang === ""
-                    ? GOOGLEPLAY_IMAGE
-                    : GOOGLEPLAY_ES_IMAGE
-                }
-                alt=""
-              />
+              <DownLoadButton buttonType="googlePlay" lang={lang?lang:""}/>
             </Link>
             <Link to="/download/appstore">
-              <img
-                src={
-                  lang === "en" || lang === ""
-                    ? APPSTORE_IMAGE
-                    : APPSTORE_ES_IMAGE
-                }
-                alt=""
-              />
+               <DownLoadButton buttonType="appStore" lang={lang?lang:""}/>
             </Link>
           </div>
         </div>
