@@ -544,7 +544,7 @@ const Event: React.FC = (): JSX.Element => {
             {response &&
             response?.is_free_event === 0 &&
             response?.ticket_plans?.length ? (
-              <div className="subtitle">Ticket Plans</div>
+              <div className="subtitle">{t('ticket_plans')}</div>
             ) : (
               <></>
             )}

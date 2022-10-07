@@ -17,6 +17,7 @@
  "personal": "Personal",
  "charitable": "Charitable",
  "professional": "Professional",
+ "ticket_plans":"Ticket Plans",
  "download_component":{
   "content":"Join local communities, chat with other members,  Get out and be active."
  },
