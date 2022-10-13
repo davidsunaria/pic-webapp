@@ -9,9 +9,9 @@ import DownLoadButton from "src/web/components/DownLoadButton";
 const Download: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
-  console.log("useParams()", useParams());
+  //console.log("useParams()", useParams());
   const { "*": lang } = useParams();
-  console.log("lang", lang);
+  //console.log("lang", lang);
   useEffect(() => {
     if (pathname === "/download/appstore")
       window.location.replace(env.REACT_APP_IOS_URL || "");
