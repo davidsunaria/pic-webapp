@@ -13,5 +13,5 @@ permissions:
     mode: 775
 hooks:
    AfterInstall:
-    - location: scripts/dev/afterInstall.sh
+    - location: scripts/prod/afterInstall.sh
       runas: root
