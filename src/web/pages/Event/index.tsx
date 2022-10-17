@@ -377,7 +377,7 @@ const Event: React.FC = (): JSX.Element => {
                                       response?.location?.coordinates[0]
                                     )
                                 )
-                                .format("MMMM Do YYYY h:mm a z")
+                                .format("LLL  z")
                             : "N/A"}
                         </label>{" "}
                       </>
@@ -456,7 +456,7 @@ const Event: React.FC = (): JSX.Element => {
                                     )
                                 )
                               )
-                              .format("MMMM Do YYYY h:mm a z")
+                              .format("LLL z")
                           : "N/A"}
                       </label>{" "}
                     </div>
