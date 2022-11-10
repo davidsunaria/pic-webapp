@@ -26,6 +26,7 @@ export const getFormattedAmount = (
   amount: string | number = 0
 ) => {
   const getLocale = () => {
+    if(currency=='mxn') currency = 'mxp'
     switch (currency?.toUpperCase()) {
       case "GBP":
         return "en-GB";
@@ -41,7 +42,6 @@ export const getFormattedAmount = (
     style: "currency",
   });
 };
-
 const Event: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   //const { id } = useParams();
@@ -230,6 +230,7 @@ const Event: React.FC = (): JSX.Element => {
       price = minValue(res?.ticket_plans)?.amount;
       currency = minValue(res?.ticket_plans)?.currency;
     }
+  
     return getFormattedAmount(currency, price);
     // if (!res || Object.keys(res)?.length === 0) {
     //   return "N/A";
