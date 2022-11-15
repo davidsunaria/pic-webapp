@@ -25,8 +25,8 @@ export const getFormattedAmount = (
   currency: string = "usd",
   amount: string | number = 0
 ) => {
+  if(currency=='mxn') currency = 'mxp'
   const getLocale = () => {
-    if(currency=='mxn') currency = 'mxp'
     switch (currency?.toUpperCase()) {
       case "GBP":
         return "en-GB";
