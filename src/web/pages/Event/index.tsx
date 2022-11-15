@@ -25,7 +25,10 @@ export const getFormattedAmount = (
   currency: string = "usd",
   amount: string | number = 0
 ) => {
-  if(currency=='mxn') currency = 'mxp'
+  if(currency=='mxn') {
+    currency = 'mxp';
+  }
+  console.log('Event', currency)
   const getLocale = () => {
     switch (currency?.toUpperCase()) {
       case "GBP":
@@ -36,7 +39,7 @@ export const getFormattedAmount = (
         return "en-US";
     }
   };
-
+  console.log('getLocale',getLocale())
   return parseFloat(amount?.toString())?.toLocaleString(getLocale(), {
     currency: currency?.toUpperCase(),
     style: "currency",
